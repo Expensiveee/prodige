@@ -27,7 +27,10 @@ class Prodige extends Client {
   public async start(configFile: ProdigeConfig): Promise<void> {
     this.config = configFile;
     this.dir = await getPath();
+    //Adding the default on message event for command handling
     this.on(event.name, event.run.bind(null, this));
+
+    //Checking the config, commands and events
     const config: ProdigeHandler = await handleConfig(this).catch(err => {
       this.console.fatal(err);
       return err;
@@ -43,6 +46,7 @@ class Prodige extends Client {
           return err;
         });
         if (events?.success) {
+          //Login if all the checks are valid
           this.login(this.config.token);
         }
       }

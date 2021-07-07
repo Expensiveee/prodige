@@ -4,6 +4,9 @@
   "description": "Prodige, get straight to it",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
+  "files": [
+    "dist"
+  ],
   "repository": "https://github.com/Expensiveee/prodige",
   "author": "expensiveee <theexpensiveee@gmail.com>",
   "license": "MIT",

@@ -12,14 +12,22 @@ import { cooldownHandler } from '../handlers/cooldownHandler';
 export const event: ProdigeEvent = {
   name: 'message',
   run: async (client: Prodige, message: Message) => {
+    //Defining an empty args object that will be
     const args: Record<string, unknown> = {};
+    //Getting the ProdigeMessageCommand object for all the handlers below
     const command = getCommand(client, message);
+
     if (command.prodigeCommand?.deleteMessage) message.delete();
+
     if (!channelsHandler({ ...command })) return;
     if (!permsHandler({ ...command })) return;
     if (!rolesHandler({ ...command })) return;
     if (!cooldownHandler({ ...command })) return;
+
+    // Note the the argsHandler needs ExtendedProdigeMessageCommand and not
     if (!argsHandler({ args, ...command })) return;
+
+    //Adding error handling if something don't go very well
     try {
       command.prodigeCommand
         ?.run({ client, message, args, command: command.prodigeCommand })
@@ -36,7 +44,8 @@ export const event: ProdigeEvent = {
             command.prodigeCommand,
           );
         });
-    } catch (err) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: any) {
       send(
         new MessageEmbed({
           author: { name: 'Error' },

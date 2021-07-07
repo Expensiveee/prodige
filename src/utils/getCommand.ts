@@ -22,6 +22,8 @@ export const getCommand = (client: Prodige, message: Message): ProdigeMessageCom
     commandName,
     plainArgs,
     cooldown: client.cooldowns.get(`${message.author.id}_${prodigeCommand.name}`),
+    //Mapping through the rolesBypass and checking for each one if the user has it.
+    //Then checking if this array or booleans includes true
     cooldownBypass:
       prodigeCommand.cooldown?.roleBypass
         ?.map((id: string) => message.member?.roles.cache.has(`${BigInt(id)}`))

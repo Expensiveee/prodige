@@ -2,3 +2,8 @@ src
 test
 .vscode
 .husky
+.github
+LICENSE
+tsconfig.json
+.prettierignore
+.prettierrc

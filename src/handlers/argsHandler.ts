@@ -5,7 +5,6 @@ import { isNumber } from '../utils/isNumber';
 import { send } from '../utils/send';
 import { getChannel } from '../utils/getChannel';
 import { MessageEmbed } from 'discord.js';
-import { ProdigeCommand } from '../interfaces/Command';
 import { ProdigeChannelType } from '../enums/ChannelsType';
 
 export const argsHandler = ({
@@ -17,6 +16,7 @@ export const argsHandler = ({
   args,
 }: ExtendedProdigeMessageCommand): boolean => {
   if (!prodigeCommand) return false;
+  //Putting all the required arguments first then the optional ones at th end
   prodigeCommand.args?.sort((x, y) => {
     return x.required === y.required ? 0 : x.required ? -1 : 1;
   });
@@ -51,6 +51,13 @@ export const argsHandler = ({
       args[name] = byDefault;
       return true;
     }
+
+    //Checking the argument type and validity
+
+    //Note that the argument wil be checked even when the arg exists and is optional
+    //For example, if an argument of type: member is expected but optional.
+    //The checking will run if the user gives an argument and will send an error message if this type isn't respected.
+    //If nothing is given by the user nothing will happen and will send the byDefault value or undefined
     if (type == 'string') {
       args[name] = arg;
       continue;
