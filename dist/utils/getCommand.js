@@ -21,6 +21,8 @@ const getCommand = (client, message) => {
         commandName,
         plainArgs,
         cooldown: client.cooldowns.get(`${message.author.id}_${prodigeCommand.name}`),
+        //Mapping through the rolesBypass and checking for each one if the user has it.
+        //Then checking if this array or booleans includes true
         cooldownBypass: ((_f = (_e = prodigeCommand.cooldown) === null || _e === void 0 ? void 0 : _e.roleBypass) === null || _f === void 0 ? void 0 : _f.map((id) => { var _a; return (_a = message.member) === null || _a === void 0 ? void 0 : _a.roles.cache.has(`${BigInt(id)}`); }).includes(true)) || false,
         havePermissions: (_g = prodigeCommand.permissions) === null || _g === void 0 ? void 0 : _g.map((perm) => { var _a; return (_a = message.member) === null || _a === void 0 ? void 0 : _a.permissions.has(perm); }).includes(true),
         haveRoles: (_h = prodigeCommand.roles) === null || _h === void 0 ? void 0 : _h.map((roleId) => { var _a; return (_a = message.member) === null || _a === void 0 ? void 0 : _a.roles.cache.has(`${BigInt(roleId)}`); }).includes(true),

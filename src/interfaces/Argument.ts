@@ -4,6 +4,6 @@ import { ProdigeChannelType } from '../enums/ChannelsType';
 export interface ProdigeArgument {
   name: string;
   type: keyof typeof ProdigeArgumentType | keyof typeof ProdigeChannelType;
-  required: boolean;
+  required?: boolean;
   byDefault?: string;
 }

@@ -6,6 +6,7 @@ import { send } from '../utils/send';
 import { getChannel } from '../utils/getChannel';
 import { MessageEmbed } from 'discord.js';
 import { ProdigeChannelType } from '../enums/ChannelsType';
+import { getMessage } from '../utils/getMessage';
 
 export const argsHandler = ({
   prodigeCommand,
@@ -70,6 +71,12 @@ export const argsHandler = ({
       const member = getMember(message, arg);
       if (member) {
         args[name] = member;
+        continue;
+      }
+    } else if (type == 'message') {
+      const msg = getMessage(message, arg);
+      if (msg) {
+        args[name] = msg;
         continue;
       }
     } else if (type in ProdigeChannelType) {

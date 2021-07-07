@@ -23,6 +23,7 @@ exports.handleEvents = void 0;
 const fs = __importStar(require("fs"));
 const handleEvents = (client) => {
     return new Promise((resolve, reject) => {
+        //Using the default events path or the events dir in the config
         const eventsDir = client.config.eventsDir
             ? `${client.dir}/${client.config.eventsDir}`
             : `${client.dir}/events`;

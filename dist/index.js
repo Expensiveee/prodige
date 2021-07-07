@@ -25,7 +25,9 @@ class Prodige extends discord_js_1.Client {
     async start(configFile) {
         this.config = configFile;
         this.dir = await getPath_1.getPath();
+        //Adding the default on message event for command handling
         this.on(message_1.event.name, message_1.event.run.bind(null, this));
+        //Checking the config, commands and events
         const config = await Config_1.handleConfig(this).catch(err => {
             this.console.fatal(err);
             return err;
@@ -41,6 +43,7 @@ class Prodige extends discord_js_1.Client {
                     return err;
                 });
                 if (events === null || events === void 0 ? void 0 : events.success) {
+                    //Login if all the checks are valid
                     this.login(this.config.token);
                 }
             }

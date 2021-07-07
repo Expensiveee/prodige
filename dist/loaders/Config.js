@@ -23,7 +23,10 @@ const handleConfig = async (client) => {
             });
         }
         if (!(config === null || config === void 0 ? void 0 : config.delErrorMessage) || typeof config.delErrorMessage != 'number') {
-            throw new Error('delErrorMessage must be a number (set to -1 for none)');
+            return reject({
+                success: false,
+                message: 'delErrorMessage must be a number (set to -1 for none)',
+            });
         }
         client.console.success('Your config file is valid');
         resolve({ success: true });

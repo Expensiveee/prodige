@@ -7,10 +7,12 @@ const send_1 = require("../utils/send");
 const getChannel_1 = require("../utils/getChannel");
 const discord_js_1 = require("discord.js");
 const ChannelsType_1 = require("../enums/ChannelsType");
+const getMessage_1 = require("../utils/getMessage");
 const argsHandler = ({ prodigeCommand, plainArgs, commandName, message, client, args, }) => {
     var _a, _b;
     if (!prodigeCommand)
         return false;
+    //Putting all the required arguments first then the optional ones at th end
     (_a = prodigeCommand.args) === null || _a === void 0 ? void 0 : _a.sort((x, y) => {
         return x.required === y.required ? 0 : x.required ? -1 : 1;
     });
@@ -41,6 +43,11 @@ const argsHandler = ({ prodigeCommand, plainArgs, commandName, message, client, 
             args[name] = byDefault;
             return true;
         }
+        //Checking the argument type and validity
+        //Note that the argument wil be checked even when the arg exists and is optional
+        //For example, if an argument of type: member is expected but optional.
+        //The checking will run if the user gives an argument and will send an error message if this type isn't respected.
+        //If nothing is given by the user nothing will happen and will send the byDefault value or undefined
         if (type == 'string') {
             args[name] = arg;
             continue;
@@ -55,6 +62,13 @@ const argsHandler = ({ prodigeCommand, plainArgs, commandName, message, client, 
             const member = getMember_1.getMember(message, arg);
             if (member) {
                 args[name] = member;
+                continue;
+            }
+        }
+        else if (type == 'message') {
+            const msg = getMessage_1.getMessage(message, arg);
+            if (msg) {
+                args[name] = msg;
                 continue;
             }
         }
