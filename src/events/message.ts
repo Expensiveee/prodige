@@ -10,7 +10,7 @@ import { channelsHandler } from '../handlers/channelsHandler';
 import { cooldownHandler } from '../handlers/cooldownHandler';
 
 export const event: ProdigeEvent = {
-  name: 'message',
+  name: 'messageCreate',
   run: async (client: Prodige, message: Message) => {
     //Defining an empty args object that will be
     const args: Record<string, unknown> = {};
