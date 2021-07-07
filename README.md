@@ -1,10 +1,31 @@
 <div align="center">
   <p>
     <br />
-    <a href="https://www.npmjs.com/package/prodige"><img src="https://img.shields.io/npm/v/prodige.svg?maxAge=3600" alt="NPM version" /></a>
-    <a href="https://www.npmjs.com/package/prodige"><img src="https://img.shields.io/npm/dt/prodige.svg?maxAge=3600" alt="NPM downloads" /></a>    
+    <a href="https://www.npmjs.com/package/prodige">
+      <img src="https://img.shields.io/npm/v/prodige.svg?maxAge=3600" alt="NPM version" />
+    </a>
+    <a href="https://www.npmjs.com/package/prodige">
+      <img src="https://img.shields.io/npm/dt/prodige.svg?maxAge=3600" alt="NPM downloads" />
+    </a>
+    <a href="https://github.com/Expensiveee/prodige">
+      <img src="https://img.shields.io/github/languages/top/Expensiveee/prodige" alt="Top language" />
+    </a>
+    <a href="https://github.com/Expensiveee/prodige">
+      <img src="https://img.shields.io/github/last-commit/Expensiveee/prodige" alt="Last commit" />
+    </a>
+    <a href="https://github.com/Expensiveee/prodige">
+      <img src="https://img.shields.io/github/languages/code-size/Expensiveee/prodige" alt="Code size" />
+    </a>
+    <a href="https://www.codefactor.io/repository/github/expensiveee/prodige">
+        <img src="https://www.codefactor.io/repository/github/expensiveee/prodige/badge" alt="Codefactor" />
+    </a>
+    <a href="https://github.com/Expensiveee/prodige">
+        <img src="https://tokei.rs/b1/github/Expensiveee/prodige?category=lines" alt="Lines of code count" />
+    </a>
     <br />
-    <a href='https://nodei.co/npm/prodige/' target='_blank'><img src="https://nodei.co/npm/prodige.png" alt="NPM" /></a>
+    <a href='https://nodei.co/npm/prodige/' target='_blank'>
+      <img src="https://nodei.co/npm/prodige.png" alt="NPM" />
+    </a>
     <br />
   </p>
 </div>
