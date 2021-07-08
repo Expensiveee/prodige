@@ -7,7 +7,12 @@ const cooldownHandler = (mCmd) => {
     if (!mCmd.prodigeCommand)
         return true;
     if (mCmd.cooldown && !mCmd.cooldownBypass) {
-        send_1.sendError({ type: 'COOLDOWN', data: mCmd });
+        send_1.sendError({
+            type: 'COOLDOWN',
+            command: mCmd,
+            client: mCmd.client,
+            message: mCmd.message,
+        });
         return false;
     }
     if (mCmd.prodigeCommand.cooldown && !mCmd.cooldownBypass) {

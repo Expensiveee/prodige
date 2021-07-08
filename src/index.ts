@@ -1,5 +1,4 @@
-import { Client, ClientOptions, Collection } from 'discord.js';
-import consola from 'consola';
+import { Client, ClientOptions, Collection, Message } from 'discord.js';
 import { ProdigeConfig } from './interfaces/Config';
 import { ProdigeCommand } from './interfaces/Command';
 import { ProdigeColors } from './enums/Colors';
@@ -10,6 +9,11 @@ import { handleConfig } from './loaders/Config';
 import { ProdigeEvent } from './interfaces/Event';
 import { ProdigeHandler } from './interfaces/Handler';
 import { getPath } from './utils/getPath';
+import { prefixSchema } from './schemas/prefix';
+import { loadPrefixes } from './utils/loadPrefixes';
+import { ProdigePrefixData } from './interfaces/MongoDB';
+import { mongo } from './utils/mongoConnect';
+import consola from 'consola';
 
 class Prodige extends Client {
   public console = consola;
@@ -20,6 +24,7 @@ class Prodige extends Client {
   public events: Collection<string, ProdigeEvent> = new Collection();
   public cooldowns: Collection<string, number> = new Collection();
   public dir: string | undefined;
+  public guildPrefixes: Record<string, string> = {};
   constructor(options: ClientOptions) {
     super(options);
   }
@@ -46,11 +51,47 @@ class Prodige extends Client {
           return err;
         });
         if (events?.success) {
-          //Login if all the checks are valid
-          this.login(this.config.token);
+          this.login(this.config.token).then(() => {
+            if (this.config.prefixPerServer) {
+              loadPrefixes(this).catch((err: string) => this.console.fatal(err));
+            }
+          });
         }
       }
     }
+  }
+
+  public setPrefix(guildId: string, prefix: string): Promise<ProdigePrefixData> {
+    return new Promise((resolve, reject) => {
+      mongo(this.config.mongodbURI).then(async mongoose => {
+        try {
+          await prefixSchema
+            .findOneAndUpdate(
+              { _id: guildId },
+              { _id: guildId, prefix },
+              { upsert: true },
+            )
+            .then((data: { _id: string; prefix: string }) => {
+              this.guildPrefixes[guildId] = prefix;
+              //Mongoose returns null if the prefix is set for the first time
+              //So lets "manually" send the previous prefix wich is in the config if data is
+              resolve({
+                success: true,
+                data: data ?? { _id: guildId, prefix: this.config.prefix },
+              });
+            })
+            .catch((error: string) => {
+              resolve({ success: false, data: { error } });
+            });
+        } finally {
+          mongoose.connection.close();
+        }
+      });
+    });
+  }
+
+  public getGuildPrefix(guildId: string): string {
+    return this.guildPrefixes[guildId] ?? this.config.prefix;
   }
 }
 

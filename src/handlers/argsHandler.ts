@@ -21,8 +21,10 @@ export const argsHandler = (mCmdExtended: ExtendedProdigeMessageCommand): boolea
     if (required && !arg) {
       sendError({
         type: 'ARGUMENT_REQUIRED',
-        data: mCmdExtended,
+        command: mCmdExtended,
         argument: prodigeCommand.args[i],
+        client: mCmdExtended.client,
+        message: mCmdExtended.message,
       });
       return false;
     }
@@ -66,8 +68,10 @@ export const argsHandler = (mCmdExtended: ExtendedProdigeMessageCommand): boolea
     }
     sendError({
       type: 'ARGUMENT_WRONG_TYPE',
-      data: mCmdExtended,
+      command: mCmdExtended,
       argument: prodigeCommand.args[i],
+      client: mCmdExtended.client,
+      message: mCmdExtended.message,
     });
     return false;
   }

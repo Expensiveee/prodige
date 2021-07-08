@@ -5,13 +5,16 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Prodige = void 0;
 const discord_js_1 = require("discord.js");
-const consola_1 = __importDefault(require("consola"));
 const Colors_1 = require("./enums/Colors");
 const message_1 = require("./events/message");
 const Commands_1 = require("./loaders/Commands");
 const Events_1 = require("./loaders/Events");
 const Config_1 = require("./loaders/Config");
 const getPath_1 = require("./utils/getPath");
+const prefix_1 = require("./schemas/prefix");
+const loadPrefixes_1 = require("./utils/loadPrefixes");
+const mongoConnect_1 = require("./utils/mongoConnect");
+const consola_1 = __importDefault(require("consola"));
 class Prodige extends discord_js_1.Client {
     constructor(options) {
         super(options);
@@ -21,6 +24,7 @@ class Prodige extends discord_js_1.Client {
         this.aliases = new discord_js_1.Collection();
         this.events = new discord_js_1.Collection();
         this.cooldowns = new discord_js_1.Collection();
+        this.guildPrefixes = {};
     }
     async start(configFile) {
         this.config = configFile;
@@ -43,11 +47,43 @@ class Prodige extends discord_js_1.Client {
                     return err;
                 });
                 if (events === null || events === void 0 ? void 0 : events.success) {
-                    //Login if all the checks are valid
-                    this.login(this.config.token);
+                    this.login(this.config.token).then(() => {
+                        if (this.config.prefixPerServer) {
+                            loadPrefixes_1.loadPrefixes(this).catch((err) => this.console.fatal(err));
+                        }
+                    });
                 }
             }
         }
+    }
+    setPrefix(guildId, prefix) {
+        return new Promise((resolve, reject) => {
+            mongoConnect_1.mongo(this.config.mongodbURI).then(async (mongoose) => {
+                try {
+                    await prefix_1.prefixSchema
+                        .findOneAndUpdate({ _id: guildId }, { _id: guildId, prefix }, { upsert: true })
+                        .then((data) => {
+                        this.guildPrefixes[guildId] = prefix;
+                        //Mongoose returns null if the prefix is set for the first time
+                        //So lets "manually" send the previous prefix wich is in the config if data is
+                        resolve({
+                            success: true,
+                            data: data !== null && data !== void 0 ? data : { _id: guildId, prefix: this.config.prefix },
+                        });
+                    })
+                        .catch((error) => {
+                        resolve({ success: false, data: { error } });
+                    });
+                }
+                finally {
+                    mongoose.connection.close();
+                }
+            });
+        });
+    }
+    getGuildPrefix(guildId) {
+        var _a;
+        return (_a = this.guildPrefixes[guildId]) !== null && _a !== void 0 ? _a : this.config.prefix;
     }
 }
 exports.Prodige = Prodige;

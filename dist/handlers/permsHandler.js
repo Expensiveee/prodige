@@ -6,7 +6,12 @@ const permsHandler = (mCmd) => {
     if (!mCmd.prodigeCommand)
         return false;
     if (mCmd.prodigeCommand.permissions && !mCmd.havePermissions) {
-        send_1.sendError({ type: 'PERMISSION', data: mCmd });
+        send_1.sendError({
+            type: 'PERMISSION',
+            command: mCmd,
+            client: mCmd.client,
+            message: mCmd.message,
+        });
         return false;
     }
     return true;

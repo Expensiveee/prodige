@@ -24,8 +24,10 @@ const argsHandler = (mCmdExtended) => {
         if (required && !arg) {
             send_1.sendError({
                 type: 'ARGUMENT_REQUIRED',
-                data: mCmdExtended,
+                command: mCmdExtended,
                 argument: prodigeCommand.args[i],
+                client: mCmdExtended.client,
+                message: mCmdExtended.message,
             });
             return false;
         }
@@ -71,8 +73,10 @@ const argsHandler = (mCmdExtended) => {
         }
         send_1.sendError({
             type: 'ARGUMENT_WRONG_TYPE',
-            data: mCmdExtended,
+            command: mCmdExtended,
             argument: prodigeCommand.args[i],
+            client: mCmdExtended.client,
+            message: mCmdExtended.message,
         });
         return false;
     }

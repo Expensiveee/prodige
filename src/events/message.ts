@@ -31,12 +31,23 @@ export const event: ProdigeEvent = {
     try {
       command.prodigeCommand
         ?.run({ client, message, args, command: command.prodigeCommand })
-        .catch(errorMessage => {
-          sendError({ type: 'EXECUTION', data: command, errorMessage });
+        .catch(error => {
+          sendError({
+            type: 'EXECUTION',
+            command,
+            error,
+            message: command.message,
+            client: client,
+          });
         });
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (errorMessage: any) {
-      sendError({ type: 'EXECUTION', data: command, errorMessage });
+    } catch (error: unknown) {
+      sendError({
+        type: 'EXECUTION',
+        command,
+        error,
+        message: command.message,
+        client: client,
+      });
     }
   },
 };

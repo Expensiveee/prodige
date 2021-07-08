@@ -6,7 +6,12 @@ const rolesHandler = (mCmd) => {
     if (!mCmd.prodigeCommand)
         return false;
     if (mCmd.prodigeCommand.roles && !mCmd.haveRoles) {
-        send_1.sendError({ type: 'ROLE', data: mCmd });
+        send_1.sendError({
+            type: 'ROLE',
+            command: mCmd,
+            client: mCmd.client,
+            message: mCmd.message,
+        });
         return false;
     }
     return true;

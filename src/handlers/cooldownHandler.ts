@@ -4,7 +4,12 @@ import { sendError } from '../utils/send';
 export const cooldownHandler = (mCmd: ProdigeMessageCommand): boolean => {
   if (!mCmd.prodigeCommand) return true;
   if (mCmd.cooldown && !mCmd.cooldownBypass) {
-    sendError({ type: 'COOLDOWN', data: mCmd });
+    sendError({
+      type: 'COOLDOWN',
+      command: mCmd,
+      client: mCmd.client,
+      message: mCmd.message,
+    });
     return false;
   }
   if (mCmd.prodigeCommand.cooldown && !mCmd.cooldownBypass) {

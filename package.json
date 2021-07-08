@@ -33,7 +33,8 @@
   },
   "dependencies": {
     "consola": "^2.15.3",
-    "discord.js": "^13.0.0-dev.2e078e4.1625573006"
+    "discord.js": "^13.0.0-dev.2e078e4.1625573006",
+    "mongoose": "^5.13.2"
   },
   "lint-staged": {
     "*.{js,ts}": "eslint --cache --fix",

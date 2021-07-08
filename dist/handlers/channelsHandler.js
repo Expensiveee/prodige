@@ -6,7 +6,12 @@ const channelsHandler = (mCmd) => {
     if (!mCmd.prodigeCommand)
         return false;
     if (mCmd.prodigeCommand.channels && !mCmd.allowedChannel) {
-        send_1.sendError({ type: 'CHANNEL', data: mCmd });
+        send_1.sendError({
+            type: 'CHANNEL',
+            command: mCmd,
+            client: mCmd.client,
+            message: mCmd.message,
+        });
         return false;
     }
     return true;

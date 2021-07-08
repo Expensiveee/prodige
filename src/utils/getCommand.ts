@@ -3,11 +3,10 @@ import { Message, PermissionResolvable } from 'discord.js';
 import { ProdigeMessageCommand } from '../interfaces/MessageCommand';
 
 export const getCommand = (client: Prodige, message: Message): ProdigeMessageCommand => {
-  if (!message.content.startsWith(client.config.prefix) || message.author.bot)
+  const prefix = client.getGuildPrefix(`${message?.guild?.id}`);
+  if (!message.content.startsWith(prefix) || message.author.bot)
     return { client, message };
-  const plainArgs: string[] = message.content
-    .slice(client.config.prefix.length)
-    .split(/ +/);
+  const plainArgs: string[] = message.content.slice(prefix.length).split(/ +/);
   const commandName = plainArgs?.shift()?.toLowerCase() ?? '';
   const prodigeCommand =
     client.commands.get(commandName) ??

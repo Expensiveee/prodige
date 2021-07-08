@@ -1,3 +1,5 @@
+import { Message } from 'discord.js';
+import { Prodige } from '..';
 import { ProdigeArgument } from './Argument';
 import { ProdigeMessageCommand } from './MessageCommand';
 
@@ -10,7 +12,9 @@ export interface ProdigeError {
     | 'ROLE'
     | 'ARGUMENT_REQUIRED'
     | 'ARGUMENT_WRONG_TYPE';
-  data: ProdigeMessageCommand;
+  message: Message;
+  command: ProdigeMessageCommand;
+  client: Prodige;
   argument?: ProdigeArgument;
-  errorMessage?: string;
+  error?: unknown;
 }

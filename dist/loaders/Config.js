@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.handleConfig = void 0;
+const mongoConnect_1 = require("../utils/mongoConnect");
 const handleConfig = async (client) => {
     return new Promise((resolve, reject) => {
         const config = client.config;
@@ -16,8 +17,42 @@ const handleConfig = async (client) => {
                 message: 'No "prefix" in config file',
             });
         }
-        client.console.success('Your config file is valid');
-        resolve({ success: true });
+        if (config.prefixPerServer && typeof config.prefixPerServer != 'boolean') {
+            return reject({
+                success: false,
+                message: '"prefixPerServer" must be a boolean',
+            });
+        }
+        if (config.prefixPerServer && !config.mongodbURI) {
+            return reject({
+                success: false,
+                message: 'If "prefixPerServer" is set to true, "mongodbURI" is mandatory',
+            });
+        }
+        if (config.mongodbURI && typeof config.mongodbURI != 'string') {
+            return reject({
+                success: false,
+                message: '"mongodbURI" must be a string',
+            });
+        }
+        if (config.mongodbURI && config.prefixPerServer) {
+            mongoConnect_1.mongo(config.mongodbURI)
+                .then(mongoose => {
+                mongoose.connection.close();
+                resolve({ success: true });
+                client.console.success('Your config file is valid');
+            })
+                .catch(err => {
+                return reject({
+                    success: false,
+                    message: err,
+                });
+            });
+        }
+        else {
+            resolve({ success: true });
+            client.console.success('Your config file is valid');
+        }
     });
 };
 exports.handleConfig = handleConfig;

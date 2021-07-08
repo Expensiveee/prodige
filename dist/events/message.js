@@ -31,13 +31,24 @@ exports.event = {
             return;
         //Adding error handling if something don't go very well
         try {
-            (_b = command.prodigeCommand) === null || _b === void 0 ? void 0 : _b.run({ client, message, args, command: command.prodigeCommand }).catch(errorMessage => {
-                send_1.sendError({ type: 'EXECUTION', data: command, errorMessage });
+            (_b = command.prodigeCommand) === null || _b === void 0 ? void 0 : _b.run({ client, message, args, command: command.prodigeCommand }).catch(error => {
+                send_1.sendError({
+                    type: 'EXECUTION',
+                    command,
+                    error,
+                    message: command.message,
+                    client: client,
+                });
             });
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
         }
-        catch (errorMessage) {
-            send_1.sendError({ type: 'EXECUTION', data: command, errorMessage });
+        catch (error) {
+            send_1.sendError({
+                type: 'EXECUTION',
+                command,
+                error,
+                message: command.message,
+                client: client,
+            });
         }
     },
 };

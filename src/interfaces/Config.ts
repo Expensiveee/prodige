@@ -4,4 +4,6 @@ export interface ProdigeConfig {
   commandsDir?: string;
   eventsDir?: string;
   ownerId?: number;
+  prefixPerServer?: boolean;
+  mongodbURI?: string;
 }
