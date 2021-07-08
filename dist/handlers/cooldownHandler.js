@@ -1,21 +1,13 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.cooldownHandler = void 0;
 const send_1 = require("../utils/send");
-const ms_1 = __importDefault(require("ms"));
-const discord_js_1 = require("discord.js");
 const cooldownHandler = (mCmd) => {
     var _a;
     if (!mCmd.prodigeCommand)
         return true;
     if (mCmd.cooldown && !mCmd.cooldownBypass) {
-        send_1.send(new discord_js_1.MessageEmbed({
-            title: `You will be able to execute this command in ${ms_1.default(mCmd.cooldown - Date.now())}`,
-            color: mCmd.client.colors.RED,
-        }), mCmd.message, mCmd.client, mCmd.prodigeCommand);
+        send_1.sendError({ type: 'COOLDOWN', data: mCmd });
         return false;
     }
     if (mCmd.prodigeCommand.cooldown && !mCmd.cooldownBypass) {

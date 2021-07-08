@@ -5,11 +5,11 @@ const getMember_1 = require("../utils/getMember");
 const isNumber_1 = require("../utils/isNumber");
 const send_1 = require("../utils/send");
 const getChannel_1 = require("../utils/getChannel");
-const discord_js_1 = require("discord.js");
 const ChannelsType_1 = require("../enums/ChannelsType");
 const getMessage_1 = require("../utils/getMessage");
-const argsHandler = ({ prodigeCommand, plainArgs, commandName, message, client, args, }) => {
+const argsHandler = (mCmdExtended) => {
     var _a, _b;
+    const { prodigeCommand, plainArgs, message, args } = mCmdExtended;
     if (!prodigeCommand)
         return false;
     //Putting all the required arguments first then the optional ones at th end
@@ -22,21 +22,11 @@ const argsHandler = ({ prodigeCommand, plainArgs, commandName, message, client, 
         const { name, required, type, byDefault } = prodigeCommand.args[i];
         const arg = plainArgs[i];
         if (required && !arg) {
-            const argsString = prodigeCommand.args
-                .map((a) => (a.required ? `[${a.name}]` : `(${a.name})`))
-                .join(' ');
-            send_1.send(new discord_js_1.MessageEmbed({
-                author: { name: 'Syntax: [] = required, () = optional.' },
-                description: `**${name}** is required`,
-                fields: [
-                    {
-                        name: 'Usage',
-                        value: `\`\`\`${client.config.prefix}${commandName} ${argsString} \`\`\``,
-                        inline: true,
-                    },
-                ],
-                color: client.colors.RED,
-            }), message, client, prodigeCommand);
+            send_1.sendError({
+                type: 'ARGUMENT_REQUIRED',
+                data: mCmdExtended,
+                argument: prodigeCommand.args[i],
+            });
             return false;
         }
         if (!arg) {
@@ -79,9 +69,11 @@ const argsHandler = ({ prodigeCommand, plainArgs, commandName, message, client, 
                 continue;
             }
         }
-        send_1.send(new discord_js_1.MessageEmbed({
-            title: `\`\`\` ${name} \`\`\` must be a \`\`\` ${Object.values(ChannelsType_1.ProdigeChannelType).includes(type) ? `${type}Channel` : type} \`\`\``,
-        }), message, client, prodigeCommand);
+        send_1.sendError({
+            type: 'ARGUMENT_WRONG_TYPE',
+            data: mCmdExtended,
+            argument: prodigeCommand.args[i],
+        });
         return false;
     }
     return true;

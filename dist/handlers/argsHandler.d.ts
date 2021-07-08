@@ -1,2 +1,2 @@
 import { ExtendedProdigeMessageCommand } from '../interfaces/MessageCommand';
-export declare const argsHandler: ({ prodigeCommand, plainArgs, commandName, message, client, args, }: ExtendedProdigeMessageCommand) => boolean;
+export declare const argsHandler: (mCmdExtended: ExtendedProdigeMessageCommand) => boolean;

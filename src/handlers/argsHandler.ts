@@ -2,20 +2,13 @@ import { ProdigeArgument } from '../interfaces/Argument';
 import { ExtendedProdigeMessageCommand } from '../interfaces/MessageCommand';
 import { getMember } from '../utils/getMember';
 import { isNumber } from '../utils/isNumber';
-import { send } from '../utils/send';
+import { sendError } from '../utils/send';
 import { getChannel } from '../utils/getChannel';
-import { MessageEmbed } from 'discord.js';
 import { ProdigeChannelType } from '../enums/ChannelsType';
 import { getMessage } from '../utils/getMessage';
 
-export const argsHandler = ({
-  prodigeCommand,
-  plainArgs,
-  commandName,
-  message,
-  client,
-  args,
-}: ExtendedProdigeMessageCommand): boolean => {
+export const argsHandler = (mCmdExtended: ExtendedProdigeMessageCommand): boolean => {
+  const { prodigeCommand, plainArgs, message, args } = mCmdExtended;
   if (!prodigeCommand) return false;
   //Putting all the required arguments first then the optional ones at th end
   prodigeCommand.args?.sort((x, y) => {
@@ -26,26 +19,11 @@ export const argsHandler = ({
     const { name, required, type, byDefault }: ProdigeArgument = prodigeCommand.args[i];
     const arg = plainArgs[i];
     if (required && !arg) {
-      const argsString = prodigeCommand.args
-        .map((a: ProdigeArgument) => (a.required ? `[${a.name}]` : `(${a.name})`))
-        .join(' ');
-      send(
-        new MessageEmbed({
-          author: { name: 'Syntax: [] = required, () = optional.' },
-          description: `**${name}** is required`,
-          fields: [
-            {
-              name: 'Usage',
-              value: `\`\`\`${client.config.prefix}${commandName} ${argsString} \`\`\``,
-              inline: true,
-            },
-          ],
-          color: client.colors.RED,
-        }),
-        message,
-        client,
-        prodigeCommand,
-      );
+      sendError({
+        type: 'ARGUMENT_REQUIRED',
+        data: mCmdExtended,
+        argument: prodigeCommand.args[i],
+      });
       return false;
     }
     if (!arg) {
@@ -86,16 +64,11 @@ export const argsHandler = ({
         continue;
       }
     }
-    send(
-      new MessageEmbed({
-        title: `\`\`\` ${name} \`\`\` must be a \`\`\` ${
-          Object.values(ProdigeChannelType).includes(type) ? `${type}Channel` : type
-        } \`\`\``,
-      }),
-      message,
-      client,
-      prodigeCommand,
-    );
+    sendError({
+      type: 'ARGUMENT_WRONG_TYPE',
+      data: mCmdExtended,
+      argument: prodigeCommand.args[i],
+    });
     return false;
   }
   return true;

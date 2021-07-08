@@ -36,7 +36,7 @@ _**Prodige, get straight to it**_
 
 Prodige is one of the most advanced command/event handler for discord.js. It has a lot of features such as aliases, cooldowns, channel only commands, permissions only commands, roles only commands... But the most important thing: argument handling. Prodige has an integrated argument handler system that allows you to be sure that your arguments will as you expect them to be.Prodige also has precise and explicit error messages.
 
-# Installation
+# 📂 | Installation
 
 Node.js 14.0.0 or newer is required.
 
@@ -44,7 +44,7 @@ Node.js 14.0.0 or newer is required.
 $ npm install prodige
 ```
 
-# Example usage
+# ✍ | Example usage
 
 index.js
 
@@ -57,18 +57,16 @@ const client = new Prodige({
 }).start({
   token: 'token',
   prefix: '-',
-  delErrorMessage: -1,
-  sendErrorMessages: true,
 });
 ```
 
-# Links
+# 👥 | Links
 
 - [Discord Server](https://discord.gg/es2CtXymWP)
 - [Documentation](https://theexpensiveee.gitbook.io/prodige)
 - [Github](https://github.com/Expensiveee/prodige)
 - [NPM](https://npmjs.com/package/prodige)
 
-# Get help
+# 🦮 | Get help
 
 Having troubles with the documentation? Join our [discord server](https://discord.gg/es2CtXymWP) to get help.

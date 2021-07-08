@@ -1,8 +1,8 @@
-import { Message, MessageEmbed } from 'discord.js';
+import { Message } from 'discord.js';
 import { Prodige } from '..';
 import { ProdigeEvent } from '../interfaces/Event';
 import { getCommand } from '../utils/getCommand';
-import { send } from '../utils/send';
+import { sendError } from '../utils/send';
 import { argsHandler } from '../handlers/argsHandler';
 import { permsHandler } from '../handlers/permsHandler';
 import { rolesHandler } from '../handlers/rolesHandler';
@@ -31,32 +31,12 @@ export const event: ProdigeEvent = {
     try {
       command.prodigeCommand
         ?.run({ client, message, args, command: command.prodigeCommand })
-        .catch(err => {
-          return send(
-            new MessageEmbed({
-              author: { name: 'Error' },
-              title: '```' + err.message + '```',
-              description: '```' + err.stack + '```',
-              color: client.colors.RED,
-            }),
-            message,
-            client,
-            command.prodigeCommand,
-          );
+        .catch(errorMessage => {
+          sendError({ type: 'EXECUTION', data: command, errorMessage });
         });
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (err: any) {
-      send(
-        new MessageEmbed({
-          author: { name: 'Error' },
-          title: '```' + err.message + '```',
-          description: '```' + err.stack + '```',
-          color: client.colors.RED,
-        }),
-        message,
-        client,
-        command.prodigeCommand,
-      );
+    } catch (errorMessage: any) {
+      sendError({ type: 'EXECUTION', data: command, errorMessage });
     }
   },
 };

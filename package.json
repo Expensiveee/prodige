@@ -19,7 +19,6 @@
     "prettier": "prettier --write ./src"
   },
   "devDependencies": {
-    "@types/ms": "^0.7.31",
     "@types/node": "^15.12.4",
     "@typescript-eslint/eslint-plugin": "^4.28.0",
     "@typescript-eslint/parser": "^4.28.0",
@@ -34,8 +33,7 @@
   },
   "dependencies": {
     "consola": "^2.15.3",
-    "discord.js": "^13.0.0-dev.2e078e4.1625573006",
-    "ms": "^2.1.3"
+    "discord.js": "^13.0.0-dev.2e078e4.1625573006"
   },
   "lint-staged": {
     "*.{js,ts}": "eslint --cache --fix",

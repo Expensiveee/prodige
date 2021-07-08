@@ -1,7 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.event = void 0;
-const discord_js_1 = require("discord.js");
 const getCommand_1 = require("../utils/getCommand");
 const send_1 = require("../utils/send");
 const argsHandler_1 = require("../handlers/argsHandler");
@@ -32,23 +31,13 @@ exports.event = {
             return;
         //Adding error handling if something don't go very well
         try {
-            (_b = command.prodigeCommand) === null || _b === void 0 ? void 0 : _b.run({ client, message, args, command: command.prodigeCommand }).catch(err => {
-                return send_1.send(new discord_js_1.MessageEmbed({
-                    author: { name: 'Error' },
-                    title: '```' + err.message + '```',
-                    description: '```' + err.stack + '```',
-                    color: client.colors.RED,
-                }), message, client, command.prodigeCommand);
+            (_b = command.prodigeCommand) === null || _b === void 0 ? void 0 : _b.run({ client, message, args, command: command.prodigeCommand }).catch(errorMessage => {
+                send_1.sendError({ type: 'EXECUTION', data: command, errorMessage });
             });
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
         }
-        catch (err) {
-            send_1.send(new discord_js_1.MessageEmbed({
-                author: { name: 'Error' },
-                title: '```' + err.message + '```',
-                description: '```' + err.stack + '```',
-                color: client.colors.RED,
-            }), message, client, command.prodigeCommand);
+        catch (errorMessage) {
+            send_1.sendError({ type: 'EXECUTION', data: command, errorMessage });
         }
     },
 };
