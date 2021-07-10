@@ -1,1 +1,1 @@
-export declare const mongo: (mongoURI: string | undefined) => Promise<typeof import('mongoose')>;
+export declare const mongo: (mongoURI: string) => Promise<typeof import('mongoose')>;

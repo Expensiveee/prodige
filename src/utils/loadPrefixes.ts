@@ -4,6 +4,9 @@ import { mongo } from './mongoConnect';
 
 export const loadPrefixes = (client: Prodige): Promise<unknown> => {
   return new Promise((resolve, reject) => {
+    if (!client.config.mongodbURI) {
+      return resolve({ success: false, data: { error: 'No MongoDb URI' } });
+    }
     mongo(client.config.mongodbURI).then(async mongoose => {
       try {
         for (const guild of client.guilds.cache) {
@@ -11,7 +14,7 @@ export const loadPrefixes = (client: Prodige): Promise<unknown> => {
             await prefixSchema.findOne({
               _id: guild[1].id,
             });
-          client.guildPrefixes[guild[1].id] = result?.prefix || client.config.prefix;
+          client.prefixes[guild[1].id] = result?.prefix || client.config.prefix;
         }
       } catch (err) {
         reject(err);

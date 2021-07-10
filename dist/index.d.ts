@@ -13,7 +13,7 @@ declare class Prodige extends Client {
     events: Collection<string, ProdigeEvent>;
     cooldowns: Collection<string, number>;
     dir: string | undefined;
-    guildPrefixes: Record<string, string>;
+    prefixes: Record<string, string>;
     constructor(options: ClientOptions);
     start(configFile: ProdigeConfig): Promise<void>;
     setPrefix(guildId: string, prefix: string): Promise<ProdigePrefixData>;

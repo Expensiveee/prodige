@@ -3,13 +3,13 @@ import { Prodige } from '..';
 import { ProdigeEvent } from '../interfaces/Event';
 import { getCommand } from '../utils/getCommand';
 import { sendError } from '../utils/send';
-import { argsHandler } from '../handlers/argsHandler';
-import { permsHandler } from '../handlers/permsHandler';
-import { rolesHandler } from '../handlers/rolesHandler';
-import { channelsHandler } from '../handlers/channelsHandler';
-import { cooldownHandler } from '../handlers/cooldownHandler';
+import { argsHandler } from '../handlers/command/arguments';
+import { permsHandler } from '../handlers/command/permissions';
+import { rolesHandler } from '../handlers/command/roles';
+import { channelsHandler } from '../handlers/command/channels';
+import { cooldownHandler } from '../handlers/command/cooldowns';
 
-export const event: ProdigeEvent = {
+export const messageEvent: ProdigeEvent = {
   name: 'messageCreate',
   run: async (client: Prodige, message: Message) => {
     //Defining an empty args object that will be

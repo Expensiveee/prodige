@@ -4,7 +4,7 @@ import { mongo } from '../utils/mongoConnect';
 export const handleConfig = async (client: Prodige): Promise<ProdigeHandler> => {
   return new Promise((resolve, reject) => {
     const config = client.config;
-    if (!config.token || typeof config.token != 'string') {
+    if (!config?.token || typeof config.token != 'string') {
       return reject({
         success: false,
         message: 'No "token" in config file',
@@ -30,6 +30,23 @@ export const handleConfig = async (client: Prodige): Promise<ProdigeHandler> => 
       });
     }
 
+    if (config.ownerId && !Array.isArray(config.ownerId)) {
+      return reject({
+        success: false,
+        message: '"ownerId" must be an array of ids (string)',
+      });
+    }
+
+    if (config.ownerId) {
+      config.ownerId.forEach(id => {
+        if (typeof id != 'string') {
+          return reject({
+            success: false,
+            message: `Id: "${id}" in the ownerOnly array must be a string`,
+          });
+        }
+      });
+    }
     if (config.mongodbURI && typeof config.mongodbURI != 'string') {
       return reject({
         success: false,
@@ -37,7 +54,7 @@ export const handleConfig = async (client: Prodige): Promise<ProdigeHandler> => 
       });
     }
 
-    if (config.mongodbURI && config.prefixPerServer) {
+    if (config?.mongodbURI && config?.prefixPerServer) {
       mongo(config.mongodbURI)
         .then(mongoose => {
           mongoose.connection.close();

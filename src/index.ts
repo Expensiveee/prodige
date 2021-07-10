@@ -1,11 +1,11 @@
-import { Client, ClientOptions, Collection, Message } from 'discord.js';
+import { Client, ClientOptions, Collection } from 'discord.js';
 import { ProdigeConfig } from './interfaces/Config';
 import { ProdigeCommand } from './interfaces/Command';
 import { ProdigeColors } from './enums/Colors';
-import { event } from './events/message';
-import { handleCommands } from './loaders/Commands';
-import { handleEvents } from './loaders/Events';
-import { handleConfig } from './loaders/Config';
+import { messageEvent } from './events/message';
+import { handleCommands } from './handlers/Commands';
+import { handleEvents } from './handlers/Events';
+import { handleConfig } from './handlers/Config';
 import { ProdigeEvent } from './interfaces/Event';
 import { ProdigeHandler } from './interfaces/Handler';
 import { getPath } from './utils/getPath';
@@ -24,7 +24,7 @@ class Prodige extends Client {
   public events: Collection<string, ProdigeEvent> = new Collection();
   public cooldowns: Collection<string, number> = new Collection();
   public dir: string | undefined;
-  public guildPrefixes: Record<string, string> = {};
+  public prefixes: Record<string, string> = {};
   constructor(options: ClientOptions) {
     super(options);
   }
@@ -32,8 +32,8 @@ class Prodige extends Client {
   public async start(configFile: ProdigeConfig): Promise<void> {
     this.config = configFile;
     this.dir = await getPath();
-    //Adding the default on message event for command handling
-    this.on(event.name, event.run.bind(null, this));
+    //Adding the default events
+    this.on(messageEvent.name, messageEvent.run.bind(null, this));
 
     //Checking the config, commands and events
     const config: ProdigeHandler = await handleConfig(this).catch(err => {
@@ -52,7 +52,7 @@ class Prodige extends Client {
         });
         if (events?.success) {
           this.login(this.config.token).then(() => {
-            if (this.config.prefixPerServer) {
+            if (this.config?.prefixPerServer) {
               loadPrefixes(this).catch((err: string) => this.console.fatal(err));
             }
           });
@@ -62,7 +62,11 @@ class Prodige extends Client {
   }
 
   public setPrefix(guildId: string, prefix: string): Promise<ProdigePrefixData> {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
+      if (!this.config?.mongodbURI) {
+        return resolve({ success: false, data: { error: 'No MongoDb URI' } });
+      }
+
       mongo(this.config.mongodbURI).then(async mongoose => {
         try {
           await prefixSchema
@@ -72,12 +76,12 @@ class Prodige extends Client {
               { upsert: true },
             )
             .then((data: { _id: string; prefix: string }) => {
-              this.guildPrefixes[guildId] = prefix;
+              this.prefixes[guildId] = prefix;
               //Mongoose returns null if the prefix is set for the first time
-              //So lets "manually" send the previous prefix wich is in the config if data is
+              //So lets "manually" send the previous prefix wich is in the config
               resolve({
                 success: true,
-                data: data ?? { _id: guildId, prefix: this.config.prefix },
+                data: data ?? { _id: guildId, prefix: this.config?.prefix },
               });
             })
             .catch((error: string) => {
@@ -91,7 +95,7 @@ class Prodige extends Client {
   }
 
   public getGuildPrefix(guildId: string): string {
-    return this.guildPrefixes[guildId] ?? this.config.prefix;
+    return this.prefixes[guildId] ?? this.config?.prefix;
   }
 }
 

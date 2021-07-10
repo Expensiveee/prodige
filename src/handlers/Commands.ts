@@ -9,10 +9,12 @@ import { ProdigeChannelType } from '../enums/ChannelsType';
 
 export const handleCommands = (client: Prodige): Promise<ProdigeHandler> => {
   return new Promise((resolve, reject) => {
+    //If a commandDir is specified in the config use it instead of the default dir
     const commandsDir = client.config.commandsDir
       ? `${client.dir}/${client.config.commandsDir}`
       : `${client.dir}/commands`;
     if (!fs.existsSync(commandsDir)) fs.mkdirSync(commandsDir);
+
     const commandsFiles = fs
       .readdirSync(commandsDir)
       .filter(file => file.endsWith('.ts') || file.endsWith('.js'));

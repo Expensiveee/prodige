@@ -27,6 +27,7 @@ const ChannelsType_1 = require("../enums/ChannelsType");
 const handleCommands = (client) => {
     return new Promise((resolve, reject) => {
         var _a, _b, _c, _d, _e, _f;
+        //If a commandDir is specified in the config use it instead of the default dir
         const commandsDir = client.config.commandsDir
             ? `${client.dir}/${client.config.commandsDir}`
             : `${client.dir}/commands`;

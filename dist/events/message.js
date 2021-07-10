@@ -1,14 +1,14 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.event = void 0;
+exports.messageEvent = void 0;
 const getCommand_1 = require("../utils/getCommand");
 const send_1 = require("../utils/send");
-const argsHandler_1 = require("../handlers/argsHandler");
-const permsHandler_1 = require("../handlers/permsHandler");
-const rolesHandler_1 = require("../handlers/rolesHandler");
-const channelsHandler_1 = require("../handlers/channelsHandler");
-const cooldownHandler_1 = require("../handlers/cooldownHandler");
-exports.event = {
+const arguments_1 = require("../handlers/command/arguments");
+const permissions_1 = require("../handlers/command/permissions");
+const roles_1 = require("../handlers/command/roles");
+const channels_1 = require("../handlers/command/channels");
+const cooldowns_1 = require("../handlers/command/cooldowns");
+exports.messageEvent = {
     name: 'messageCreate',
     run: async (client, message) => {
         var _a, _b;
@@ -18,16 +18,16 @@ exports.event = {
         const command = getCommand_1.getCommand(client, message);
         if ((_a = command.prodigeCommand) === null || _a === void 0 ? void 0 : _a.deleteMessage)
             message.delete();
-        if (!channelsHandler_1.channelsHandler({ ...command }))
+        if (!channels_1.channelsHandler({ ...command }))
             return;
-        if (!permsHandler_1.permsHandler({ ...command }))
+        if (!permissions_1.permsHandler({ ...command }))
             return;
-        if (!rolesHandler_1.rolesHandler({ ...command }))
+        if (!roles_1.rolesHandler({ ...command }))
             return;
-        if (!cooldownHandler_1.cooldownHandler({ ...command }))
+        if (!cooldowns_1.cooldownHandler({ ...command }))
             return;
         // Note the the argsHandler needs ExtendedProdigeMessageCommand and not
-        if (!argsHandler_1.argsHandler({ args, ...command }))
+        if (!arguments_1.argsHandler({ args, ...command }))
             return;
         //Adding error handling if something don't go very well
         try {

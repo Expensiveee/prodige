@@ -9,6 +9,7 @@ export interface ProdigeError {
     | 'CHANNEL'
     | 'COOLDOWN'
     | 'PERMISSION'
+    | 'OWNER_ONLY'
     | 'ROLE'
     | 'ARGUMENT_REQUIRED'
     | 'ARGUMENT_WRONG_TYPE';

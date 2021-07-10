@@ -1,12 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.argsHandler = void 0;
-const getMember_1 = require("../utils/getMember");
-const isNumber_1 = require("../utils/isNumber");
-const send_1 = require("../utils/send");
-const getChannel_1 = require("../utils/getChannel");
-const ChannelsType_1 = require("../enums/ChannelsType");
-const getMessage_1 = require("../utils/getMessage");
+const getMember_1 = require("../../utils/getMember");
+const isNumber_1 = require("../../utils/isNumber");
+const send_1 = require("../../utils/send");
+const getChannel_1 = require("../../utils/getChannel");
+const ChannelsType_1 = require("../../enums/ChannelsType");
+const getMessage_1 = require("../../utils/getMessage");
 const argsHandler = (mCmdExtended) => {
     var _a, _b;
     const { prodigeCommand, plainArgs, message, args } = mCmdExtended;

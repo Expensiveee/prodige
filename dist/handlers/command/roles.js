@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.rolesHandler = void 0;
-const send_1 = require("../utils/send");
+const send_1 = require("../../utils/send");
 const rolesHandler = (mCmd) => {
     if (!mCmd.prodigeCommand)
         return false;

@@ -3,7 +3,7 @@ import { Prodige } from '..';
 import { ProdigeArgument } from './Argument';
 import { ProdigeMessageCommand } from './MessageCommand';
 export interface ProdigeError {
-    type: 'EXECUTION' | 'CHANNEL' | 'COOLDOWN' | 'PERMISSION' | 'ROLE' | 'ARGUMENT_REQUIRED' | 'ARGUMENT_WRONG_TYPE';
+    type: 'EXECUTION' | 'CHANNEL' | 'COOLDOWN' | 'PERMISSION' | 'OWNER_ONLY' | 'ROLE' | 'ARGUMENT_REQUIRED' | 'ARGUMENT_WRONG_TYPE';
     message: Message;
     command: ProdigeMessageCommand;
     client: Prodige;

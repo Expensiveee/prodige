@@ -3,7 +3,7 @@ export interface ProdigeConfig {
     prefix: string;
     commandsDir?: string;
     eventsDir?: string;
-    ownerId?: number;
+    ownerId?: Array<string>;
     prefixPerServer?: boolean;
     mongodbURI?: string;
 }

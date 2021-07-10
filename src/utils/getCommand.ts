@@ -6,14 +6,17 @@ export const getCommand = (client: Prodige, message: Message): ProdigeMessageCom
   const prefix = client.getGuildPrefix(`${message?.guild?.id}`);
   if (!message.content.startsWith(prefix) || message.author.bot)
     return { client, message };
+
   const plainArgs: string[] = message.content.slice(prefix.length).split(/ +/);
-  const commandName = plainArgs?.shift()?.toLowerCase() ?? '';
+  const commandName = plainArgs?.shift()?.toLowerCase();
+  if (!commandName) return { client, message };
+
   const prodigeCommand =
     client.commands.get(commandName) ??
     client.commands.get(client.aliases.get(commandName) ?? '');
+
   if (!prodigeCommand) return { client, message };
-  if (prodigeCommand.ownerOnly && message.author.id != `${client.config.ownerId}`)
-    return { client, message };
+
   return {
     client,
     message,
@@ -22,7 +25,7 @@ export const getCommand = (client: Prodige, message: Message): ProdigeMessageCom
     plainArgs,
     cooldown: client.cooldowns.get(`${message.author.id}_${prodigeCommand.name}`),
     //Mapping through the rolesBypass and checking for each one if the user has it.
-    //Then checking if this array or booleans includes true
+    //Then checking if this array of booleans includes true
     cooldownBypass:
       prodigeCommand.cooldown?.roleBypass
         ?.map((id: string) => message.member?.roles.cache.has(`${BigInt(id)}`))
@@ -33,6 +36,7 @@ export const getCommand = (client: Prodige, message: Message): ProdigeMessageCom
     haveRoles: prodigeCommand.roles
       ?.map((roleId: string) => message.member?.roles.cache.has(`${BigInt(roleId)}`))
       .includes(true),
+    isAllowed: client.config?.ownerId?.includes(message.author.id),
     allowedChannel: prodigeCommand.channels
       ?.map((id: string) => message.channel.id == `${BigInt(id)}`)
       .includes(true),

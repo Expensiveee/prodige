@@ -1,5 +1,5 @@
-import { ProdigeMessageCommand } from '../interfaces/MessageCommand';
-import { sendError } from '../utils/send';
+import { ProdigeMessageCommand } from '../../interfaces/MessageCommand';
+import { sendError } from '../../utils/send';
 
 export const channelsHandler = (mCmd: ProdigeMessageCommand): boolean => {
   if (!mCmd.prodigeCommand) return false;

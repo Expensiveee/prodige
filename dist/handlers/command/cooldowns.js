@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.cooldownHandler = void 0;
-const send_1 = require("../utils/send");
+const send_1 = require("../../utils/send");
 const cooldownHandler = (mCmd) => {
     var _a;
     if (!mCmd.prodigeCommand)

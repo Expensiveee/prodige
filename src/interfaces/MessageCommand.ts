@@ -12,6 +12,7 @@ export interface ProdigeMessageCommand {
   cooldownBypass?: boolean;
   havePermissions?: boolean;
   haveRoles?: boolean;
+  isAllowed?: boolean;
   allowedChannel?: boolean;
 }
 
