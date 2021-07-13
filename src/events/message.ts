@@ -13,7 +13,8 @@ export const messageEvent: ProdigeEvent = {
   name: 'messageCreate',
   run: async (client: Prodige, message: Message) => {
     //Defining an empty args object that will be
-    const args: Record<string, unknown> = {};
+    const prefix = client.getGuildPrefix(message.guild?.id ?? '');
+    const args: Record<string, never> = {};
     //Getting the ProdigeMessageCommand object for all the handlers below
     const command = getCommand(client, message);
 
@@ -30,7 +31,7 @@ export const messageEvent: ProdigeEvent = {
     //Adding error handling if something don't go very well
     try {
       command.prodigeCommand
-        ?.run({ client, message, args, command: command.prodigeCommand })
+        ?.run({ client, message, args, command: command.prodigeCommand, prefix })
         .catch(error => {
           sendError({
             type: 'EXECUTION',

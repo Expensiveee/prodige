@@ -6,4 +6,7 @@ export interface ProdigeConfig {
   ownerId?: Array<string>;
   prefixPerServer?: boolean;
   mongodbURI?: string;
+  defaultCommands?: {
+    help?: boolean;
+  };
 }

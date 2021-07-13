@@ -1,6 +1,6 @@
 import { Client, ClientOptions, Collection } from 'discord.js';
 import { ProdigeConfig } from './interfaces/Config';
-import { ProdigeCommand } from './interfaces/Command';
+import { ProdigeCommand, ProdigeCommandCategory } from './interfaces/Command';
 import { ProdigeColors } from './enums/Colors';
 import { messageEvent } from './events/message';
 import { handleCommands } from './handlers/Commands';
@@ -13,7 +13,9 @@ import { prefixSchema } from './schemas/prefix';
 import { loadPrefixes } from './utils/loadPrefixes';
 import { ProdigePrefixData } from './interfaces/MongoDB';
 import { mongo } from './utils/mongoConnect';
+import help from './commands/help';
 import consola from 'consola';
+import { sortCategories } from './utils/sortCategories';
 
 class Prodige extends Client {
   public console = consola;
@@ -23,6 +25,7 @@ class Prodige extends Client {
   public aliases: Collection<string, string> = new Collection();
   public events: Collection<string, ProdigeEvent> = new Collection();
   public cooldowns: Collection<string, number> = new Collection();
+  public categories: Collection<string, ProdigeCommandCategory[]> = new Collection();
   public dir: string | undefined;
   public prefixes: Record<string, string> = {};
   constructor(options: ClientOptions) {
@@ -32,7 +35,7 @@ class Prodige extends Client {
   public async start(configFile: ProdigeConfig): Promise<void> {
     this.config = configFile;
     this.dir = await getPath();
-    //Adding the default events
+    //Adding default events
     this.on(messageEvent.name, messageEvent.run.bind(null, this));
 
     //Checking the config, commands and events
@@ -46,6 +49,12 @@ class Prodige extends Client {
         return err;
       });
       if (commands?.success) {
+        //Adding default commands if not disabled or overwritten
+        if (this.config?.defaultCommands?.help != false && !this.commands.get('help')) {
+          sortCategories(this);
+          this.commands.set(help.name, help);
+        }
+
         const events: ProdigeHandler = await handleEvents(this).catch(err => {
           this.console.fatal(err);
           return err;
@@ -67,6 +76,12 @@ class Prodige extends Client {
         return resolve({ success: false, data: { error: 'No MongoDb URI' } });
       }
 
+      if (!this.config.prefixPerServer) {
+        return resolve({
+          success: false,
+          data: { error: '"prefixPerServer" must be set to true' },
+        });
+      }
       mongo(this.config.mongodbURI).then(async mongoose => {
         try {
           await prefixSchema

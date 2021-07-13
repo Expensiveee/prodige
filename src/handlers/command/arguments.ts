@@ -1,11 +1,11 @@
 import { ProdigeArgument } from '../../interfaces/Argument';
 import { ExtendedProdigeMessageCommand } from '../../interfaces/MessageCommand';
-import { getMember } from '../../utils/getMember';
-import { isNumber } from '../../utils/isNumber';
+import { getMember } from '../../utils/arguments/getMember';
+import { isNumber } from '../../utils/arguments/isNumber';
 import { sendError } from '../../utils/send';
-import { getChannel } from '../../utils/getChannel';
 import { ProdigeChannelType } from '../../enums/ChannelsType';
-import { getMessage } from '../../utils/getMessage';
+import { getMessage } from '../../utils/arguments/getMessage';
+import { getChannel } from '../../utils/arguments/getChannel';
 
 export const argsHandler = (mCmdExtended: ExtendedProdigeMessageCommand): boolean => {
   const { prodigeCommand, plainArgs, message, args } = mCmdExtended;

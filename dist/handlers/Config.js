@@ -56,7 +56,6 @@ const handleConfig = async (client) => {
                 .then(mongoose => {
                 mongoose.connection.close();
                 resolve({ success: true });
-                client.console.success('Your config file is valid');
             })
                 .catch(err => {
                 return reject({
@@ -67,7 +66,6 @@ const handleConfig = async (client) => {
         }
         else {
             resolve({ success: true });
-            client.console.success('Your config file is valid');
         }
     });
 };

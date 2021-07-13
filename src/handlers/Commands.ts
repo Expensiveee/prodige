@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
+import * as fs from 'fs';
 import { Prodige } from '..';
 import { ProdigeCommand } from '../interfaces/Command';
 import { ProdigePermissions } from '../enums/Permissions';
 import { ProdigeHandler } from '../interfaces/Handler';
-import * as fs from 'fs';
 import { ProdigeArgumentType } from '../enums/ArgumentType';
 import { ProdigeChannelType } from '../enums/ChannelsType';
 
@@ -21,7 +21,9 @@ export const handleCommands = (client: Prodige): Promise<ProdigeHandler> => {
     try {
       for (let i = 0; i < commandsFiles.length; i++) {
         const file = commandsFiles[i];
-        const command: ProdigeCommand = require(`${commandsDir}/${file}`);
+        const command: ProdigeCommand =
+          require(`${commandsDir}/${file}`).default ?? require(`${commandsDir}/${file}`);
+
         if (!command.name || typeof command.name != 'string') {
           return reject({
             success: false,

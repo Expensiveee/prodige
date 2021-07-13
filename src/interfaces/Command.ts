@@ -9,17 +9,22 @@ interface ProdigeRunFunction {
     message,
     args,
     command,
+    prefix,
   }: {
     client: Prodige;
     message: Message;
-    args: Record<string, unknown> | undefined;
+    args: Record<string, never>;
     command: ProdigeCommand;
+    prefix: string;
   }): Promise<unknown>;
 }
 
 export interface ProdigeCommand {
   name: string;
   run: ProdigeRunFunction;
+  description?: string;
+  category?: string;
+  usage?: string;
   args?: Array<ProdigeArgument>;
   aliases?: Array<string>;
   cooldown?: ProdigeCooldown;
@@ -28,4 +33,11 @@ export interface ProdigeCommand {
   roles?: Array<string>;
   permissions?: Array<PermissionResolvable>;
   deleteMessage?: boolean;
+}
+
+export interface ProdigeCommandCategory {
+  name: string;
+  aliases?: Array<string>;
+  description: string;
+  usage?: string;
 }

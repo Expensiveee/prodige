@@ -20,13 +20,14 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.handleCommands = void 0;
-const Permissions_1 = require("../enums/Permissions");
+/* eslint-disable @typescript-eslint/no-var-requires */
 const fs = __importStar(require("fs"));
+const Permissions_1 = require("../enums/Permissions");
 const ArgumentType_1 = require("../enums/ArgumentType");
 const ChannelsType_1 = require("../enums/ChannelsType");
 const handleCommands = (client) => {
     return new Promise((resolve, reject) => {
-        var _a, _b, _c, _d, _e, _f;
+        var _a, _b, _c, _d, _e, _f, _g;
         //If a commandDir is specified in the config use it instead of the default dir
         const commandsDir = client.config.commandsDir
             ? `${client.dir}/${client.config.commandsDir}`
@@ -39,7 +40,7 @@ const handleCommands = (client) => {
         try {
             for (let i = 0; i < commandsFiles.length; i++) {
                 const file = commandsFiles[i];
-                const command = require(`${commandsDir}/${file}`);
+                const command = (_a = require(`${commandsDir}/${file}`).default) !== null && _a !== void 0 ? _a : require(`${commandsDir}/${file}`);
                 if (!command.name || typeof command.name != 'string') {
                     return reject({
                         success: false,
@@ -58,20 +59,20 @@ const handleCommands = (client) => {
                         message: `You enabled cooldown in "${file}" but haven't specified a delay`,
                     });
                 }
-                if (command.cooldown && typeof ((_a = command.cooldown) === null || _a === void 0 ? void 0 : _a.delay) != 'number') {
+                if (command.cooldown && typeof ((_b = command.cooldown) === null || _b === void 0 ? void 0 : _b.delay) != 'number') {
                     return reject({
                         success: false,
                         message: `Cooldown delay in "${file}" must be a number`,
                     });
                 }
-                if (((_b = command.cooldown) === null || _b === void 0 ? void 0 : _b.roleBypass) && !Array.isArray(command.cooldown.roleBypass)) {
+                if (((_c = command.cooldown) === null || _c === void 0 ? void 0 : _c.roleBypass) && !Array.isArray(command.cooldown.roleBypass)) {
                     return reject({
                         success: false,
                         message: `Cooldown roleBypass in "${file}" must be an array of role ids (string)`,
                     });
                 }
-                if ((_c = command.cooldown) === null || _c === void 0 ? void 0 : _c.roleBypass) {
-                    (_d = command.cooldown) === null || _d === void 0 ? void 0 : _d.roleBypass.forEach(roleBypassId => {
+                if ((_d = command.cooldown) === null || _d === void 0 ? void 0 : _d.roleBypass) {
+                    (_e = command.cooldown) === null || _e === void 0 ? void 0 : _e.roleBypass.forEach(roleBypassId => {
                         if (typeof roleBypassId != 'string') {
                             return reject({
                                 success: false,
@@ -137,7 +138,7 @@ const handleCommands = (client) => {
                     });
                 }
                 if (command.permissions) {
-                    (_e = command.permissions) === null || _e === void 0 ? void 0 : _e.forEach(permission => {
+                    (_f = command.permissions) === null || _f === void 0 ? void 0 : _f.forEach(permission => {
                         if (typeof permission != 'string') {
                             return reject({
                                 success: false,
@@ -184,7 +185,7 @@ const handleCommands = (client) => {
                 }
                 client.commands.set(command.name, command);
                 if (command.aliases) {
-                    (_f = command.aliases) === null || _f === void 0 ? void 0 : _f.forEach(aliase => {
+                    (_g = command.aliases) === null || _g === void 0 ? void 0 : _g.forEach(aliase => {
                         if (typeof aliase == 'string') {
                             client.aliases.set(aliase, command.name);
                         }

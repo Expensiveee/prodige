@@ -11,12 +11,13 @@ const cooldowns_1 = require("../handlers/command/cooldowns");
 exports.messageEvent = {
     name: 'messageCreate',
     run: async (client, message) => {
-        var _a, _b;
+        var _a, _b, _c, _d;
         //Defining an empty args object that will be
+        const prefix = client.getGuildPrefix((_b = (_a = message.guild) === null || _a === void 0 ? void 0 : _a.id) !== null && _b !== void 0 ? _b : '');
         const args = {};
         //Getting the ProdigeMessageCommand object for all the handlers below
         const command = getCommand_1.getCommand(client, message);
-        if ((_a = command.prodigeCommand) === null || _a === void 0 ? void 0 : _a.deleteMessage)
+        if ((_c = command.prodigeCommand) === null || _c === void 0 ? void 0 : _c.deleteMessage)
             message.delete();
         if (!channels_1.channelsHandler({ ...command }))
             return;
@@ -31,7 +32,7 @@ exports.messageEvent = {
             return;
         //Adding error handling if something don't go very well
         try {
-            (_b = command.prodigeCommand) === null || _b === void 0 ? void 0 : _b.run({ client, message, args, command: command.prodigeCommand }).catch(error => {
+            (_d = command.prodigeCommand) === null || _d === void 0 ? void 0 : _d.run({ client, message, args, command: command.prodigeCommand, prefix }).catch(error => {
                 send_1.sendError({
                     type: 'EXECUTION',
                     command,

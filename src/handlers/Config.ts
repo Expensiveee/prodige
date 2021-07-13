@@ -59,7 +59,6 @@ export const handleConfig = async (client: Prodige): Promise<ProdigeHandler> => 
         .then(mongoose => {
           mongoose.connection.close();
           resolve({ success: true });
-          client.console.success('Your config file is valid');
         })
         .catch(err => {
           return reject({
@@ -69,7 +68,6 @@ export const handleConfig = async (client: Prodige): Promise<ProdigeHandler> => 
         });
     } else {
       resolve({ success: true });
-      client.console.success('Your config file is valid');
     }
   });
 };

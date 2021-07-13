@@ -1,5 +1,5 @@
 import { GuildChannel, Message, ThreadChannel } from 'discord.js';
-import { ProdigeChannelType } from '../enums/ChannelsType';
+import { ProdigeChannelType } from '../../enums/ChannelsType';
 export const getChannel = (
   message: Message,
   arg: string,
