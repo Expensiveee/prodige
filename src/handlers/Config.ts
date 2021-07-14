@@ -10,12 +10,20 @@ export const handleConfig = async (client: Prodige): Promise<ProdigeHandler> => 
         message: 'No "token" in config file',
       });
     }
-    if (!config.prefix || typeof config.prefix != 'string') {
+    if (!config.prefix) {
       return reject({
         success: false,
         message: 'No "prefix" in config file',
       });
     }
+
+    if (config.prefix && !Array.isArray(config.prefix)) {
+      return reject({
+        success: false,
+        message: '"prefix" must be an array (string)',
+      });
+    }
+
     if (config.prefixPerServer && typeof config.prefixPerServer != 'boolean') {
       return reject({
         success: false,
@@ -45,6 +53,13 @@ export const handleConfig = async (client: Prodige): Promise<ProdigeHandler> => 
             message: `Id: "${id}" in the ownerOnly array must be a string`,
           });
         }
+      });
+    }
+
+    if (config.allowBots && typeof config.allowBots != 'boolean') {
+      return reject({
+        success: false,
+        message: '"allowBots" must be a boolean',
       });
     }
     if (config.mongodbURI && typeof config.mongodbURI != 'string') {

@@ -14,7 +14,9 @@ const loadPrefixes = (client) => {
                     const result = await prefix_1.prefixSchema.findOne({
                         _id: guild[1].id,
                     });
-                    client.prefixes[guild[1].id] = (result === null || result === void 0 ? void 0 : result.prefix) || client.config.prefix;
+                    client.prefixes[guild[1].id] = (result === null || result === void 0 ? void 0 : result.prefix)
+                        ? [result === null || result === void 0 ? void 0 : result.prefix]
+                        : client.config.prefix;
                 }
             }
             catch (err) {

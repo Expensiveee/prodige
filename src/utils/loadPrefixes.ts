@@ -14,7 +14,9 @@ export const loadPrefixes = (client: Prodige): Promise<unknown> => {
             await prefixSchema.findOne({
               _id: guild[1].id,
             });
-          client.prefixes[guild[1].id] = result?.prefix || client.config.prefix;
+          client.prefixes[guild[1].id] = result?.prefix
+            ? [result?.prefix]
+            : client.config.prefix;
         }
       } catch (err) {
         reject(err);

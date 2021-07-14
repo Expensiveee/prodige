@@ -97,7 +97,7 @@ class Prodige extends discord_js_1.Client {
                         .findOneAndUpdate({ _id: guildId }, { _id: guildId, prefix }, { upsert: true })
                         .then((data) => {
                         var _a;
-                        this.prefixes[guildId] = prefix;
+                        this.prefixes[guildId] = [prefix];
                         //Mongoose returns null if the prefix is set for the first time
                         //So lets "manually" send the previous prefix wich is in the config
                         resolve({

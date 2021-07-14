@@ -2,8 +2,11 @@ import { Prodige } from '..';
 import { Message, PermissionResolvable } from 'discord.js';
 import { ProdigeMessageCommand } from '../interfaces/MessageCommand';
 
-export const getCommand = (client: Prodige, message: Message): ProdigeMessageCommand => {
-  const prefix = client.getGuildPrefix(`${message?.guild?.id}`);
+export const getCommand = (
+  client: Prodige,
+  message: Message,
+  prefix: string,
+): ProdigeMessageCommand => {
   if (!message.content.startsWith(prefix) || message.author.bot)
     return { client, message };
 

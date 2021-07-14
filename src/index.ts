@@ -27,7 +27,7 @@ class Prodige extends Client {
   public cooldowns: Collection<string, number> = new Collection();
   public categories: Collection<string, ProdigeCommandCategory[]> = new Collection();
   public dir: string | undefined;
-  public prefixes: Record<string, string> = {};
+  public prefixes: Record<string, string[]> = {};
   public clientOptions!: ClientOptions;
   constructor(options: ClientOptions) {
     super(options);
@@ -103,7 +103,7 @@ class Prodige extends Client {
               { upsert: true },
             )
             .then((data: { _id: string; prefix: string }) => {
-              this.prefixes[guildId] = prefix;
+              this.prefixes[guildId] = [prefix];
               //Mongoose returns null if the prefix is set for the first time
               //So lets "manually" send the previous prefix wich is in the config
               resolve({
@@ -121,7 +121,7 @@ class Prodige extends Client {
     });
   }
 
-  public getGuildPrefix(guildId: string): string {
+  public getGuildPrefix(guildId: string): string[] {
     return this.prefixes[guildId] ?? this.config?.prefix;
   }
 }
