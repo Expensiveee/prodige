@@ -3,7 +3,7 @@ import { sendError } from '../../utils/send';
 
 export const rolesHandler = (mCmd: ProdigeMessageCommand): boolean => {
   if (!mCmd.prodigeCommand) return false;
-  if (mCmd.prodigeCommand.roles && !mCmd.haveRoles) {
+  if (mCmd.prodigeCommand.roles && !mCmd.haveRequiredRoles) {
     sendError({
       type: 'ROLE',
       command: mCmd,

@@ -5,7 +5,7 @@ const send_1 = require("../../utils/send");
 const rolesHandler = (mCmd) => {
     if (!mCmd.prodigeCommand)
         return false;
-    if (mCmd.prodigeCommand.roles && !mCmd.haveRoles) {
+    if (mCmd.prodigeCommand.roles && !mCmd.haveRequiredRoles) {
         send_1.sendError({
             type: 'ROLE',
             command: mCmd,

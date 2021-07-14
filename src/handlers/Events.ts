@@ -35,11 +35,6 @@ export const handleEvents = (client: Prodige): Promise<ProdigeHandler> => {
         client.events.set(event.name, event);
         client.on(event.name, event.run.bind(null, client));
       }
-      if (client.events.size == 0) {
-        client.console.warn('0 event loaded');
-      } else {
-        client.console.success(`${client.events.size} event(s) successfully loaded`);
-      }
       resolve({ success: true });
     } catch (err) {
       return reject({ success: false, message: err });

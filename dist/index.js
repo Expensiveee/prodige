@@ -28,6 +28,7 @@ class Prodige extends discord_js_1.Client {
         this.cooldowns = new discord_js_1.Collection();
         this.categories = new discord_js_1.Collection();
         this.prefixes = {};
+        this.clientOptions = options;
     }
     async start(configFile) {
         var _a, _b;
@@ -46,6 +47,12 @@ class Prodige extends discord_js_1.Client {
                 return err;
             });
             if (commands === null || commands === void 0 ? void 0 : commands.success) {
+                if (this.commands.size == 0) {
+                    this.console.warn('0 command loaded');
+                }
+                else {
+                    this.console.success(`${this.commands.size} command(s) successfully loaded`);
+                }
                 //Adding default commands if not disabled or overwritten
                 if (((_b = (_a = this.config) === null || _a === void 0 ? void 0 : _a.defaultCommands) === null || _b === void 0 ? void 0 : _b.help) != false && !this.commands.get('help')) {
                     sortCategories_1.sortCategories(this);
@@ -56,6 +63,12 @@ class Prodige extends discord_js_1.Client {
                     return err;
                 });
                 if (events === null || events === void 0 ? void 0 : events.success) {
+                    if (this.events.size == 0) {
+                        this.console.warn('0 event loaded');
+                    }
+                    else {
+                        this.console.success(`${this.events.size} event(s) successfully loaded`);
+                    }
                     this.login(this.config.token).then(() => {
                         var _a;
                         if ((_a = this.config) === null || _a === void 0 ? void 0 : _a.prefixPerServer) {

@@ -28,8 +28,10 @@ class Prodige extends Client {
   public categories: Collection<string, ProdigeCommandCategory[]> = new Collection();
   public dir: string | undefined;
   public prefixes: Record<string, string> = {};
+  public clientOptions!: ClientOptions;
   constructor(options: ClientOptions) {
     super(options);
+    this.clientOptions = options;
   }
 
   public async start(configFile: ProdigeConfig): Promise<void> {
@@ -49,6 +51,11 @@ class Prodige extends Client {
         return err;
       });
       if (commands?.success) {
+        if (this.commands.size == 0) {
+          this.console.warn('0 command loaded');
+        } else {
+          this.console.success(`${this.commands.size} command(s) successfully loaded`);
+        }
         //Adding default commands if not disabled or overwritten
         if (this.config?.defaultCommands?.help != false && !this.commands.get('help')) {
           sortCategories(this);
@@ -60,6 +67,11 @@ class Prodige extends Client {
           return err;
         });
         if (events?.success) {
+          if (this.events.size == 0) {
+            this.console.warn('0 event loaded');
+          } else {
+            this.console.success(`${this.events.size} event(s) successfully loaded`);
+          }
           this.login(this.config.token).then(() => {
             if (this.config?.prefixPerServer) {
               loadPrefixes(this).catch((err: string) => this.console.fatal(err));

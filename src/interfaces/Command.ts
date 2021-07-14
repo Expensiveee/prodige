@@ -28,6 +28,7 @@ export interface ProdigeCommand {
   args?: Array<ProdigeArgument>;
   aliases?: Array<string>;
   cooldown?: ProdigeCooldown;
+  dmOnly?: boolean;
   ownerOnly?: boolean;
   channels?: Array<string>;
   roles?: Array<string>;

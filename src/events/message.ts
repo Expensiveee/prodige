@@ -8,6 +8,7 @@ import { permsHandler } from '../handlers/command/permissions';
 import { rolesHandler } from '../handlers/command/roles';
 import { channelsHandler } from '../handlers/command/channels';
 import { cooldownHandler } from '../handlers/command/cooldowns';
+import { dmsHandler } from '../handlers/command/dms';
 
 export const messageEvent: ProdigeEvent = {
   name: 'messageCreate',
@@ -18,14 +19,26 @@ export const messageEvent: ProdigeEvent = {
     //Getting the ProdigeMessageCommand object for all the handlers below
     const command = getCommand(client, message);
 
-    if (command.prodigeCommand?.deleteMessage) message.delete();
+    if (
+      command.prodigeCommand?.deleteMessage &&
+      !command.prodigeCommand.dmOnly &&
+      !command.inDmChannel
+    )
+      message.delete();
 
-    if (!channelsHandler({ ...command })) return;
-    if (!permsHandler({ ...command })) return;
-    if (!rolesHandler({ ...command })) return;
+    if (!dmsHandler({ ...command })) return;
+    if (command.prodigeCommand?.dmOnly != true) {
+      console.log('Ran1');
+      if (!channelsHandler({ ...command })) return;
+      console.log('Ran2');
+      if (!permsHandler({ ...command })) return;
+      console.log('Ran3');
+      if (!rolesHandler({ ...command })) return;
+      console.log('Ran');
+    }
     if (!cooldownHandler({ ...command })) return;
 
-    // Note the the argsHandler needs ExtendedProdigeMessageCommand and not
+    // Note the the argsHandler needs ExtendedProdigeMessageCommand not ProdigeMessageCommand
     if (!argsHandler({ args, ...command })) return;
 
     //Adding error handling if something don't go very well

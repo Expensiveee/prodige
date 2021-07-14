@@ -5,7 +5,7 @@ const send_1 = require("../../utils/send");
 const channelsHandler = (mCmd) => {
     if (!mCmd.prodigeCommand)
         return false;
-    if (mCmd.prodigeCommand.channels && !mCmd.allowedChannel) {
+    if (mCmd.prodigeCommand.channels && !mCmd.inAllowedChannel) {
         send_1.sendError({
             type: 'CHANNEL',
             command: mCmd,

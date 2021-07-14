@@ -1,22 +1,22 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.permsHandler = void 0;
+exports.dmsHandler = void 0;
 const send_1 = require("../../utils/send");
-const permsHandler = (mCmd) => {
+const dmsHandler = (mCmd) => {
     if (!mCmd.prodigeCommand)
         return false;
-    if (mCmd.prodigeCommand.ownerOnly && !mCmd.isOwner) {
+    if (mCmd.prodigeCommand.dmOnly && !mCmd.inDmChannel) {
         send_1.sendError({
-            type: 'OWNER_ONLY',
+            type: 'NOT_IN_DM',
             command: mCmd,
             client: mCmd.client,
             message: mCmd.message,
         });
         return false;
     }
-    else if (mCmd.prodigeCommand.permissions && !mCmd.haveRequiredPermissions) {
+    else if (mCmd.prodigeCommand.dmOnly == false && mCmd.inDmChannel) {
         send_1.sendError({
-            type: 'PERMISSION',
+            type: 'NOT_IN_GUILD',
             command: mCmd,
             client: mCmd.client,
             message: mCmd.message,
@@ -25,4 +25,4 @@ const permsHandler = (mCmd) => {
     }
     return true;
 };
-exports.permsHandler = permsHandler;
+exports.dmsHandler = dmsHandler;

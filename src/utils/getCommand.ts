@@ -30,15 +30,16 @@ export const getCommand = (client: Prodige, message: Message): ProdigeMessageCom
       prodigeCommand.cooldown?.roleBypass
         ?.map((id: string) => message.member?.roles.cache.has(`${BigInt(id)}`))
         .includes(true) || false,
-    havePermissions: prodigeCommand.permissions
+    haveRequiredPermissions: prodigeCommand.permissions
       ?.map((perm: PermissionResolvable) => message.member?.permissions.has(perm))
       .includes(true),
-    haveRoles: prodigeCommand.roles
+    haveRequiredRoles: prodigeCommand.roles
       ?.map((roleId: string) => message.member?.roles.cache.has(`${BigInt(roleId)}`))
       .includes(true),
-    isAllowed: client.config?.ownerId?.includes(message.author.id),
-    allowedChannel: prodigeCommand.channels
+    isOwner: client.config?.ownerId?.includes(message.author.id),
+    inAllowedChannel: prodigeCommand.channels
       ?.map((id: string) => message.channel.id == `${BigInt(id)}`)
       .includes(true),
+    inDmChannel: message.channel.type == 'dm',
   };
 };

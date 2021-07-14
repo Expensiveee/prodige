@@ -10,10 +10,11 @@ export interface ProdigeMessageCommand {
   plainArgs?: Array<string>;
   cooldown?: number;
   cooldownBypass?: boolean;
-  havePermissions?: boolean;
-  haveRoles?: boolean;
-  isAllowed?: boolean;
-  allowedChannel?: boolean;
+  haveRequiredPermissions?: boolean;
+  haveRequiredRoles?: boolean;
+  isOwner?: boolean;
+  inAllowedChannel?: boolean;
+  inDmChannel?: boolean;
 }
 
 export interface ExtendedProdigeMessageCommand extends ProdigeMessageCommand {

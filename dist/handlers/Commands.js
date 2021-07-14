@@ -27,7 +27,7 @@ const ArgumentType_1 = require("../enums/ArgumentType");
 const ChannelsType_1 = require("../enums/ChannelsType");
 const handleCommands = (client) => {
     return new Promise((resolve, reject) => {
-        var _a, _b, _c, _d, _e, _f, _g;
+        var _a, _b, _c, _d, _e, _f, _g, _h;
         //If a commandDir is specified in the config use it instead of the default dir
         const commandsDir = client.config.commandsDir
             ? `${client.dir}/${client.config.commandsDir}`
@@ -165,6 +165,20 @@ const handleCommands = (client) => {
                         message: `Args in "${file}" must an array of ProdigeArguments`,
                     });
                 }
+                if (command.dmOnly) {
+                    if (typeof command.dmOnly != 'boolean') {
+                        return reject({
+                            success: false,
+                            message: `dmOnly in "${file}" must be a boolean`,
+                        });
+                    }
+                    if (!((_g = client.options.partials) === null || _g === void 0 ? void 0 : _g.includes('CHANNEL'))) {
+                        return reject({
+                            success: false,
+                            message: 'You need to enable the "CHANNEl" partial in order to use dmOnly commands',
+                        });
+                    }
+                }
                 if (command.args) {
                     command.args.forEach(arg => {
                         if (typeof arg.type == 'undefined') {
@@ -181,11 +195,17 @@ const handleCommands = (client) => {
                                 });
                             }
                         }
+                        if (command.dmOnly && !['string', 'number'].includes(arg.type)) {
+                            return reject({
+                                success: false,
+                                message: 'dmOnly commands are not allowed to have an argument type other than "string" or "number"',
+                            });
+                        }
                     });
                 }
                 client.commands.set(command.name, command);
                 if (command.aliases) {
-                    (_g = command.aliases) === null || _g === void 0 ? void 0 : _g.forEach(aliase => {
+                    (_h = command.aliases) === null || _h === void 0 ? void 0 : _h.forEach(aliase => {
                         if (typeof aliase == 'string') {
                             client.aliases.set(aliase, command.name);
                         }
@@ -194,12 +214,6 @@ const handleCommands = (client) => {
                         }
                     });
                 }
-            }
-            if (client.commands.size == 0) {
-                client.console.warn('0 command loaded');
-            }
-            else {
-                client.console.success(`${client.commands.size} command(s) successfully loaded`);
             }
             resolve({ success: true });
         }

@@ -12,7 +12,9 @@ export interface ProdigeError {
     | 'OWNER_ONLY'
     | 'ROLE'
     | 'ARGUMENT_REQUIRED'
-    | 'ARGUMENT_WRONG_TYPE';
+    | 'ARGUMENT_WRONG_TYPE'
+    | 'NOT_IN_DM'
+    | 'NOT_IN_GUILD';
   message: Message;
   command: ProdigeMessageCommand;
   client: Prodige;

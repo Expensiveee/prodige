@@ -150,6 +150,22 @@ export const handleCommands = (client: Prodige): Promise<ProdigeHandler> => {
           });
         }
 
+        if (command.dmOnly) {
+          if (typeof command.dmOnly != 'boolean') {
+            return reject({
+              success: false,
+              message: `dmOnly in "${file}" must be a boolean`,
+            });
+          }
+          if (!client.options.partials?.includes('CHANNEL')) {
+            return reject({
+              success: false,
+              message:
+                'You need to enable the "CHANNEl" partial in order to use dmOnly commands',
+            });
+          }
+        }
+
         if (command.args) {
           command.args.forEach(arg => {
             if (typeof arg.type == 'undefined') {
@@ -166,6 +182,13 @@ export const handleCommands = (client: Prodige): Promise<ProdigeHandler> => {
                 });
               }
             }
+            if (command.dmOnly && !['string', 'number'].includes(arg.type)) {
+              return reject({
+                success: false,
+                message:
+                  'dmOnly commands are not allowed to have an argument type other than "string" or "number"',
+              });
+            }
           });
         }
 
@@ -181,11 +204,6 @@ export const handleCommands = (client: Prodige): Promise<ProdigeHandler> => {
             }
           });
         }
-      }
-      if (client.commands.size == 0) {
-        client.console.warn('0 command loaded');
-      } else {
-        client.console.success(`${client.commands.size} command(s) successfully loaded`);
       }
       resolve({ success: true });
     } catch (err) {

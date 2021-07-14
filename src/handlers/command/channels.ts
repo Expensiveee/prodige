@@ -3,7 +3,7 @@ import { sendError } from '../../utils/send';
 
 export const channelsHandler = (mCmd: ProdigeMessageCommand): boolean => {
   if (!mCmd.prodigeCommand) return false;
-  if (mCmd.prodigeCommand.channels && !mCmd.allowedChannel) {
+  if (mCmd.prodigeCommand.channels && !mCmd.inAllowedChannel) {
     sendError({
       type: 'CHANNEL',
       command: mCmd,
