@@ -44,7 +44,13 @@ exports.messageEvent = {
                 return;
             //Adding error handling if something don't go very well
             try {
-                (_e = command.prodigeCommand) === null || _e === void 0 ? void 0 : _e.run({ client, message, args, command: command.prodigeCommand, prefix: '!' }).catch(error => {
+                (_e = command.prodigeCommand) === null || _e === void 0 ? void 0 : _e.run({
+                    client,
+                    message,
+                    args,
+                    command: command.prodigeCommand,
+                    prefix: prefixes[i],
+                }).catch(error => {
                     send_1.sendError({
                         type: 'EXECUTION',
                         command,

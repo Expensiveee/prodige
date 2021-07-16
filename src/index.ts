@@ -12,10 +12,11 @@ import { getPath } from './utils/getPath';
 import { prefixSchema } from './schemas/prefix';
 import { loadPrefixes } from './utils/loadPrefixes';
 import { ProdigePrefixData } from './interfaces/MongoDB';
+import { sortCategories } from './utils/sortCategories';
 import { mongo } from './utils/mongoConnect';
 import help from './commands/help';
+import setprefix from './commands/setprefix';
 import consola from 'consola';
-import { sortCategories } from './utils/sortCategories';
 
 class Prodige extends Client {
   public console = consola;
@@ -57,6 +58,14 @@ class Prodige extends Client {
           this.console.success(`${this.commands.size} command(s) successfully loaded`);
         }
         //Adding default commands if not disabled or overwritten
+        if (
+          this.config?.defaultCommands?.setprefix != false &&
+          !this.commands.get('setprefix') &&
+          this.config.prefixPerServer
+        ) {
+          this.commands.set(setprefix.name, setprefix);
+        }
+
         if (this.config?.defaultCommands?.help != false && !this.commands.get('help')) {
           sortCategories(this);
           this.commands.set(help.name, help);
@@ -82,7 +91,10 @@ class Prodige extends Client {
     }
   }
 
-  public setPrefix(guildId: string, prefix: string): Promise<ProdigePrefixData> {
+  public setPrefix(
+    guildId: string | undefined,
+    prefix: string,
+  ): Promise<ProdigePrefixData> {
     return new Promise(resolve => {
       if (!this.config?.mongodbURI) {
         return resolve({ success: false, data: { error: 'No MongoDb URI' } });
@@ -94,6 +106,14 @@ class Prodige extends Client {
           data: { error: '"prefixPerServer" must be set to true' },
         });
       }
+
+      if (!guildId) {
+        return resolve({
+          success: false,
+          data: { error: 'guildId can not be null' },
+        });
+      }
+
       mongo(this.config.mongodbURI).then(async mongoose => {
         try {
           await prefixSchema

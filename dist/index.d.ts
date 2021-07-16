@@ -18,7 +18,7 @@ declare class Prodige extends Client {
     clientOptions: ClientOptions;
     constructor(options: ClientOptions);
     start(configFile: ProdigeConfig): Promise<void>;
-    setPrefix(guildId: string, prefix: string): Promise<ProdigePrefixData>;
+    setPrefix(guildId: string | undefined, prefix: string): Promise<ProdigePrefixData>;
     getGuildPrefix(guildId: string): string[];
 }
 export { Prodige };

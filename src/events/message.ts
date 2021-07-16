@@ -44,7 +44,13 @@ export const messageEvent: ProdigeEvent = {
       //Adding error handling if something don't go very well
       try {
         command.prodigeCommand
-          ?.run({ client, message, args, command: command.prodigeCommand, prefix: '!' })
+          ?.run({
+            client,
+            message,
+            args,
+            command: command.prodigeCommand,
+            prefix: prefixes[i],
+          })
           .catch(error => {
             sendError({
               type: 'EXECUTION',

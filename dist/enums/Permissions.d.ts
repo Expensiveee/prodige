@@ -30,10 +30,10 @@ export declare enum ProdigePermissions {
     'MANAGE_NICKNAMES' = 28,
     'MANAGE_ROLES' = 29,
     'MANAGE_WEBHOOKS' = 30,
-    ' MANAGE_EMOJIS' = 31,
+    'MANAGE_EMOJIS' = 31,
     'USE_SLASH_COMMANDS' = 32,
     'REQUEST_TO_SPEAK' = 33,
     'MANAGE_THREADS' = 34,
     'USE_PUBLIC_THREADS' = 35,
-    ' USE_PRIVATE_THREADS' = 36
+    'USE_PRIVATE_THREADS' = 36
 }

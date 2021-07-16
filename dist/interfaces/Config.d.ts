@@ -9,5 +9,6 @@ export interface ProdigeConfig {
     allowBots?: boolean;
     defaultCommands?: {
         help?: boolean;
+        setprefix?: boolean;
     };
 }
