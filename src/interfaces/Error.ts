@@ -8,6 +8,7 @@ export interface ProdigeError {
     | 'EXECUTION'
     | 'CHANNEL'
     | 'COOLDOWN'
+    | 'GLOBAL_COOLDOWN'
     | 'PERMISSION'
     | 'OWNER_ONLY'
     | 'ROLE'

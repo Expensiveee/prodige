@@ -27,6 +27,7 @@ class Prodige extends discord_js_1.Client {
         this.aliases = new discord_js_1.Collection();
         this.events = new discord_js_1.Collection();
         this.cooldowns = new discord_js_1.Collection();
+        this.globalCooldowns = new discord_js_1.Collection();
         this.categories = new discord_js_1.Collection();
         this.prefixes = {};
         this.clientOptions = options;

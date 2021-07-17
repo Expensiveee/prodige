@@ -26,23 +26,30 @@ export const getCommand = (
     prodigeCommand,
     commandName,
     plainArgs,
-    cooldown: client.cooldowns.get(`${message.author.id}_${prodigeCommand.name}`),
+    cooldown: client.cooldowns.get(`${message.author.id}_${prodigeCommand.name}`) ?? 0,
     //Mapping through the rolesBypass and checking for each one if the user has it.
     //Then checking if this array of booleans includes true
     cooldownBypass:
-      prodigeCommand.cooldown?.roleBypass
+      prodigeCommand.cooldown?.rolesBypass
         ?.map((id: string) => message.member?.roles.cache.has(`${BigInt(id)}`))
-        .includes(true) || false,
-    haveRequiredPermissions: prodigeCommand.permissions
-      ?.map((perm: PermissionResolvable) => message.member?.permissions.has(perm))
-      .includes(true),
-    haveRequiredRoles: prodigeCommand.roles
-      ?.map((roleId: string) => message.member?.roles.cache.has(`${BigInt(roleId)}`))
-      .includes(true),
+        .includes(true) ?? false,
+    globalCooldown:
+      client.globalCooldowns.get(
+        `${message.guild?.id ?? message.channel.id}_${prodigeCommand.name}`,
+      ) ?? 0,
+    haveRequiredPermissions:
+      prodigeCommand.permissions
+        ?.map((perm: PermissionResolvable) => message.member?.permissions.has(perm))
+        .includes(true) ?? true,
+    haveRequiredRoles:
+      prodigeCommand.roles
+        ?.map((roleId: string) => message.member?.roles.cache.has(`${BigInt(roleId)}`))
+        .includes(true) ?? true,
     isOwner: client.config?.ownerId?.includes(message.author.id),
-    inAllowedChannel: prodigeCommand.channels
-      ?.map((id: string) => message.channel.id == `${BigInt(id)}`)
-      .includes(true),
+    inAllowedChannel:
+      prodigeCommand.channels
+        ?.map((id: string) => message.channel.id == `${BigInt(id)}`)
+        .includes(true) ?? true,
     inDmChannel: message.channel.type == 'dm',
   };
 };

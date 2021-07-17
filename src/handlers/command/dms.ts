@@ -11,7 +11,7 @@ export const dmsHandler = (mCmd: ProdigeMessageCommand): boolean => {
       message: mCmd.message,
     });
     return false;
-  } else if (mCmd.prodigeCommand.dmOnly == false && mCmd.inDmChannel) {
+  } else if (typeof mCmd.prodigeCommand.dmOnly === 'undefined' && mCmd.inDmChannel) {
     sendError({
       type: 'NOT_IN_GUILD',
       command: mCmd,

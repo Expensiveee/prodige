@@ -12,6 +12,7 @@ declare class Prodige extends Client {
     aliases: Collection<string, string>;
     events: Collection<string, ProdigeEvent>;
     cooldowns: Collection<string, number>;
+    globalCooldowns: Collection<string, number>;
     categories: Collection<string, ProdigeCommandCategory[]>;
     dir: string | undefined;
     prefixes: Record<string, string[]>;

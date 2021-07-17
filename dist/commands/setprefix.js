@@ -6,6 +6,7 @@ exports.default = {
     description: 'Change the actual prefix for this server',
     usage: 'setprefix [prefix]',
     permissions: ['ADMINISTRATOR', 'MANAGE_GUILD'],
+    globalCooldown: 21600000,
     args: [{ name: 'prefix', type: 'string', required: true }],
     run: async ({ client, message, args }) => {
         var _a;

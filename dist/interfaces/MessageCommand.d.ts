@@ -8,6 +8,7 @@ export interface ProdigeMessageCommand {
     commandName?: string;
     plainArgs?: Array<string>;
     cooldown?: number;
+    globalCooldown?: number;
     cooldownBypass?: boolean;
     haveRequiredPermissions?: boolean;
     haveRequiredRoles?: boolean;

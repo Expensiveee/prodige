@@ -49,14 +49,17 @@ export const handleCommands = (client: Prodige): Promise<ProdigeHandler> => {
             message: `Cooldown delay in "${file}" must be a number`,
           });
         }
-        if (command.cooldown?.roleBypass && !Array.isArray(command.cooldown.roleBypass)) {
+        if (
+          command.cooldown?.rolesBypass &&
+          !Array.isArray(command.cooldown.rolesBypass)
+        ) {
           return reject({
             success: false,
             message: `Cooldown roleBypass in "${file}" must be an array of role ids (string)`,
           });
         }
-        if (command.cooldown?.roleBypass) {
-          command.cooldown?.roleBypass.forEach(roleBypassId => {
+        if (command.cooldown?.rolesBypass) {
+          command.cooldown?.rolesBypass.forEach(roleBypassId => {
             if (typeof roleBypassId != 'string') {
               return reject({
                 success: false,
@@ -65,6 +68,14 @@ export const handleCommands = (client: Prodige): Promise<ProdigeHandler> => {
             }
           });
         }
+
+        if (command.globalCooldown && typeof command.globalCooldown != 'number') {
+          return reject({
+            success: false,
+            message: `globalCooldown in "${file}" must a number`,
+          });
+        }
+
         if (command.channels && !Array.isArray(command.channels)) {
           return reject({
             success: false,

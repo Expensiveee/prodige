@@ -9,6 +9,7 @@ const roles_1 = require("../handlers/command/roles");
 const channels_1 = require("../handlers/command/channels");
 const cooldowns_1 = require("../handlers/command/cooldowns");
 const dms_1 = require("../handlers/command/dms");
+const globalCooldown_1 = require("../handlers/command/globalCooldown");
 exports.messageEvent = {
     name: 'messageCreate',
     run: async (client, message) => {
@@ -38,6 +39,8 @@ exports.messageEvent = {
                     return;
             }
             if (!cooldowns_1.cooldownHandler({ ...command }))
+                return;
+            if (!globalCooldown_1.globalCooldownHandler({ ...command }))
                 return;
             // Note the the argsHandler needs ExtendedProdigeMessageCommand not ProdigeMessageCommand
             if (!arguments_1.argsHandler({ args, ...command }))

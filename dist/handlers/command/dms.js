@@ -14,7 +14,7 @@ const dmsHandler = (mCmd) => {
         });
         return false;
     }
-    else if (mCmd.prodigeCommand.dmOnly == false && mCmd.inDmChannel) {
+    else if (typeof mCmd.prodigeCommand.dmOnly === 'undefined' && mCmd.inDmChannel) {
         send_1.sendError({
             type: 'NOT_IN_GUILD',
             command: mCmd,

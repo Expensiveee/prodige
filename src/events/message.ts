@@ -9,6 +9,7 @@ import { rolesHandler } from '../handlers/command/roles';
 import { channelsHandler } from '../handlers/command/channels';
 import { cooldownHandler } from '../handlers/command/cooldowns';
 import { dmsHandler } from '../handlers/command/dms';
+import { globalCooldownHandler } from '../handlers/command/globalCooldown';
 
 export const messageEvent: ProdigeEvent = {
   name: 'messageCreate',
@@ -37,6 +38,7 @@ export const messageEvent: ProdigeEvent = {
         if (!rolesHandler({ ...command })) return;
       }
       if (!cooldownHandler({ ...command })) return;
+      if (!globalCooldownHandler({ ...command })) return;
 
       // Note the the argsHandler needs ExtendedProdigeMessageCommand not ProdigeMessageCommand
       if (!argsHandler({ args, ...command })) return;

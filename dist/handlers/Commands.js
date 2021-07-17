@@ -65,20 +65,27 @@ const handleCommands = (client) => {
                         message: `Cooldown delay in "${file}" must be a number`,
                     });
                 }
-                if (((_c = command.cooldown) === null || _c === void 0 ? void 0 : _c.roleBypass) && !Array.isArray(command.cooldown.roleBypass)) {
+                if (((_c = command.cooldown) === null || _c === void 0 ? void 0 : _c.rolesBypass) &&
+                    !Array.isArray(command.cooldown.rolesBypass)) {
                     return reject({
                         success: false,
                         message: `Cooldown roleBypass in "${file}" must be an array of role ids (string)`,
                     });
                 }
-                if ((_d = command.cooldown) === null || _d === void 0 ? void 0 : _d.roleBypass) {
-                    (_e = command.cooldown) === null || _e === void 0 ? void 0 : _e.roleBypass.forEach(roleBypassId => {
+                if ((_d = command.cooldown) === null || _d === void 0 ? void 0 : _d.rolesBypass) {
+                    (_e = command.cooldown) === null || _e === void 0 ? void 0 : _e.rolesBypass.forEach(roleBypassId => {
                         if (typeof roleBypassId != 'string') {
                             return reject({
                                 success: false,
                                 message: `"${roleBypassId}" in "${file}" must be a number`,
                             });
                         }
+                    });
+                }
+                if (command.globalCooldown && typeof command.globalCooldown != 'number') {
+                    return reject({
+                        success: false,
+                        message: `globalCooldown in "${file}" must a number`,
                     });
                 }
                 if (command.channels && !Array.isArray(command.channels)) {
