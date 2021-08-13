@@ -27,7 +27,7 @@ const ArgumentType_1 = require("../enums/ArgumentType");
 const ChannelsType_1 = require("../enums/ChannelsType");
 const handleCommands = (client) => {
     return new Promise((resolve, reject) => {
-        var _a, _b, _c, _d, _e, _f, _g, _h;
+        var _a, _b, _c, _d, _e, _f, _g, _h, _j;
         //If a commandDir is specified in the config use it instead of the default dir
         const commandsDir = client.config.commandsDir
             ? `${client.dir}/${client.config.commandsDir}`
@@ -141,11 +141,33 @@ const handleCommands = (client) => {
                 if (command.permissions && !Array.isArray(command.permissions)) {
                     return reject({
                         success: false,
-                        message: `Permissions in "${file}" must be an array of PermissionsFlags (string)`,
+                        message: `Permissions in "${file}" must be an array of Permissions Flags (string)`,
                     });
                 }
                 if (command.permissions) {
                     (_f = command.permissions) === null || _f === void 0 ? void 0 : _f.forEach(permission => {
+                        if (typeof permission != 'string') {
+                            return reject({
+                                success: false,
+                                message: `"${permission}" in "${file}" must be a string`,
+                            });
+                        }
+                        else if (!Object.values(Permissions_1.ProdigePermissions).includes(permission)) {
+                            return reject({
+                                success: false,
+                                message: `"${permission}" in "${file}" doesn't exist as a permission flag`,
+                            });
+                        }
+                    });
+                }
+                if (command.botPermissions && !Array.isArray(command.botPermissions)) {
+                    return reject({
+                        success: false,
+                        message: `botPermissions in "${file}" must be an array of Permissions Flags (string)`,
+                    });
+                }
+                if (command.botPermissions) {
+                    (_g = command.botPermissions) === null || _g === void 0 ? void 0 : _g.forEach(permission => {
                         if (typeof permission != 'string') {
                             return reject({
                                 success: false,
@@ -179,7 +201,7 @@ const handleCommands = (client) => {
                             message: `dmOnly in "${file}" must be a boolean`,
                         });
                     }
-                    if (!((_g = client.options.partials) === null || _g === void 0 ? void 0 : _g.includes('CHANNEL'))) {
+                    if (!((_h = client.options.partials) === null || _h === void 0 ? void 0 : _h.includes('CHANNEL'))) {
                         return reject({
                             success: false,
                             message: 'You need to enable the "CHANNEl" partial in order to use dmOnly commands',
@@ -212,7 +234,7 @@ const handleCommands = (client) => {
                 }
                 client.commands.set(command.name, command);
                 if (command.aliases) {
-                    (_h = command.aliases) === null || _h === void 0 ? void 0 : _h.forEach(aliase => {
+                    (_j = command.aliases) === null || _j === void 0 ? void 0 : _j.forEach(aliase => {
                         if (typeof aliase == 'string') {
                             client.aliases.set(aliase, command.name);
                         }

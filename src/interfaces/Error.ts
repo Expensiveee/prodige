@@ -10,6 +10,7 @@ export interface ProdigeError {
     | 'COOLDOWN'
     | 'GLOBAL_COOLDOWN'
     | 'PERMISSION'
+    | 'BOT_PERMISSION'
     | 'OWNER_ONLY'
     | 'ROLE'
     | 'ARGUMENT_REQUIRED'

@@ -10,6 +10,7 @@ const channels_1 = require("../handlers/command/channels");
 const cooldowns_1 = require("../handlers/command/cooldowns");
 const dms_1 = require("../handlers/command/dms");
 const globalCooldown_1 = require("../handlers/command/globalCooldown");
+const botPermissions_1 = require("../handlers/command/botPermissions");
 exports.messageEvent = {
     name: 'messageCreate',
     run: async (client, message) => {
@@ -30,10 +31,13 @@ exports.messageEvent = {
                 message.delete();
             if (!dms_1.dmsHandler({ ...command }))
                 return;
-            if (((_d = command.prodigeCommand) === null || _d === void 0 ? void 0 : _d.dmOnly) != true) {
+            if (((_d = command.prodigeCommand) === null || _d === void 0 ? void 0 : _d.dmOnly) != true &&
+                command.message.channel.type != 'dm') {
                 if (!channels_1.channelsHandler({ ...command }))
                     return;
                 if (!permissions_1.permsHandler({ ...command }))
+                    return;
+                if (!botPermissions_1.botPermsHandler({ ...command }))
                     return;
                 if (!roles_1.rolesHandler({ ...command }))
                     return;

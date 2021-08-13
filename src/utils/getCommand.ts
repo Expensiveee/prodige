@@ -41,6 +41,10 @@ export const getCommand = (
       prodigeCommand.permissions
         ?.map((perm: PermissionResolvable) => message.member?.permissions.has(perm))
         .includes(true) ?? true,
+    haveRequiredBotPermissions:
+      !prodigeCommand.botPermissions
+        ?.map((perm: PermissionResolvable) => message.guild?.me?.permissions.has(perm))
+        .includes(false) ?? true,
     haveRequiredRoles:
       prodigeCommand.roles
         ?.map((roleId: string) => message.member?.roles.cache.has(`${BigInt(roleId)}`))

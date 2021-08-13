@@ -26,6 +26,7 @@ export interface ProdigeCommand {
     channels?: Array<string>;
     roles?: Array<string>;
     permissions?: Array<PermissionResolvable>;
+    botPermissions?: Array<PermissionResolvable>;
     deleteMessage?: boolean;
 }
 export interface ProdigeCommandCategory {

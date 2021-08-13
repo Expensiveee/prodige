@@ -129,7 +129,7 @@ export const handleCommands = (client: Prodige): Promise<ProdigeHandler> => {
         if (command.permissions && !Array.isArray(command.permissions)) {
           return reject({
             success: false,
-            message: `Permissions in "${file}" must be an array of PermissionsFlags (string)`,
+            message: `Permissions in "${file}" must be an array of Permissions Flags (string)`,
           });
         }
         if (command.permissions) {
@@ -147,6 +147,29 @@ export const handleCommands = (client: Prodige): Promise<ProdigeHandler> => {
             }
           });
         }
+
+        if (command.botPermissions && !Array.isArray(command.botPermissions)) {
+          return reject({
+            success: false,
+            message: `botPermissions in "${file}" must be an array of Permissions Flags (string)`,
+          });
+        }
+        if (command.botPermissions) {
+          command.botPermissions?.forEach(permission => {
+            if (typeof permission != 'string') {
+              return reject({
+                success: false,
+                message: `"${permission}" in "${file}" must be a string`,
+              });
+            } else if (!Object.values(ProdigePermissions).includes(permission)) {
+              return reject({
+                success: false,
+                message: `"${permission}" in "${file}" doesn't exist as a permission flag`,
+              });
+            }
+          });
+        }
+
         if (command.aliases && !Array.isArray(command.aliases)) {
           return reject({
             success: false,

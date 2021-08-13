@@ -10,6 +10,7 @@ import { channelsHandler } from '../handlers/command/channels';
 import { cooldownHandler } from '../handlers/command/cooldowns';
 import { dmsHandler } from '../handlers/command/dms';
 import { globalCooldownHandler } from '../handlers/command/globalCooldown';
+import { botPermsHandler } from '../handlers/command/botPermissions';
 
 export const messageEvent: ProdigeEvent = {
   name: 'messageCreate',
@@ -32,9 +33,13 @@ export const messageEvent: ProdigeEvent = {
         message.delete();
 
       if (!dmsHandler({ ...command })) return;
-      if (command.prodigeCommand?.dmOnly != true) {
+      if (
+        command.prodigeCommand?.dmOnly != true &&
+        command.message.channel.type != 'dm'
+      ) {
         if (!channelsHandler({ ...command })) return;
         if (!permsHandler({ ...command })) return;
+        if (!botPermsHandler({ ...command })) return;
         if (!rolesHandler({ ...command })) return;
       }
       if (!cooldownHandler({ ...command })) return;
